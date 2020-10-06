@@ -1,0 +1,10 @@
+{
+  // 右击扩展,复制ID,贴到这里.
+  "recommendations": [
+    "ms-ceintl.vscode-language-pack-zh-hans",
+    "msjsdiag.debugger-for-chrome",
+    "gruntfuggly.todo-tree",
+    "visualstudioexptteam.vscodeintellicode",
+    "dbaeumer.vscode-eslint"
+  ]
+}
