@@ -144,6 +144,15 @@ function initDiagram() {
             }
         )
 
+    function showSmallPorts(node, show) {
+        node.ports.each(function (port) {
+            if (port.portId !== "") {  // don't change the default port, which is the big shape
+                port.fill = show ? "rgba(0,0,0,.3)" : null;
+            }
+        });
+    }
+
+
     var linkSelectionAdornmentTemplate =
         $(go.Adornment, "Link",
             $(go.Shape,
