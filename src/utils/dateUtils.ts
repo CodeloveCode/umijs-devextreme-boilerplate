@@ -4,7 +4,7 @@ import moment from "moment";
  * @param {Date|string} datetime 
  * @returns {string}
  */
-function getDateStr(datetime) {
+function getDateStr(datetime: Date | string): string {
     return moment(datetime).format('YYYY-MM-DD')
 }
 
@@ -13,7 +13,7 @@ function getDateStr(datetime) {
  * @param {Date|string} datetime 
  * @returns {string}
  */
-function getTimeStr(datetime) {
+function getTimeStr(datetime: Date | string): string {
     return moment(datetime).format('HH:mm:ss')
 }
 
@@ -22,7 +22,7 @@ function getTimeStr(datetime) {
  * @param {Date|string} datetime 
  * @returns {string}
  */
-function getDateTimeStr(datetime) {
+function getDateTimeStr(datetime: Date | string): string {
     return moment(datetime).format('YYYY-MM-DD HH:mm:ss')
 }
 
@@ -34,7 +34,7 @@ function getDateTimeStr(datetime) {
  * "2020-08-24T09:05:00Z" 标准时间
  * @param {Date|string} datetime 
  */
-function getUTCStr(datetime) {
+function getUTCStr(datetime: Date | string): string {
     return moment(datetime).format('YYYY-MM-DDTHH:mm:ssZ')
 }
 
