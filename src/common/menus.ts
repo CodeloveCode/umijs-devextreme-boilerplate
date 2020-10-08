@@ -79,6 +79,11 @@ const menus: IMenu[] = [
         path: '/demo/nested-html-by-react',
         icon: 'preferences',
       },
+      {
+        text: 'diagram',
+        path: '/demo/dev-diagram/data-binding-advanced',
+        icon: 'preferences',
+      },
     ],
   },
 ];

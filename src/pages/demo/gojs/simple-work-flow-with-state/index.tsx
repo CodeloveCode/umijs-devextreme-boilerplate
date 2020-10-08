@@ -147,6 +147,7 @@ class App extends React.Component<any, AppState>{
                         linkDataArray={this.state.linkDataArray}
                         modelData={this.state.modelData}
                         skipsDiagramUpdate={this.state.skipsDiagramUpdate}
+                        // @ts-ignore
                         onDiagramEvent={this.handleDiagramEvent}
                         onModelChange={this.handleModelChange}
                     />
