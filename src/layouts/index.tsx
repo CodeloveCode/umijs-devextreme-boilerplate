@@ -95,5 +95,5 @@ function BasicLayout(props: any) {
 
 export default connect(
   (state: { session: SessionModelState }) => ({ sessionState: state.session }),
-  (dispatch) => ({ dispatch }),
+  (dispatch: any) => ({ dispatch }),
 )(BasicLayout);
