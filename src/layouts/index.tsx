@@ -1,99 +1,96 @@
-import React, { useState } from 'react';
-import { Link, Redirect, withRouter, connect } from 'umi';
-import LeftSider from '@/components/leftSider';
-import Header from '@/components/header';
-import { Drawer } from 'devextreme-react';
-import { SessionModelState } from '@/models/session';
-import Store from '@/utils/store';
-import { LOGINED_USER_SESSION } from '@/common/constants';
-import './index.less';
 
-interface tabConfig {
-  id: number;
-  text: string;
-  icon: string;
-  path: string;
-}
+import React from "react";
+import ProLayout, { MenuDataItem } from "@ant-design/pro-layout";
+import { Route } from '@ant-design/pro-layout/lib/typings';
+import { withRouter } from "react-router";
+import { menus } from '@/common/menus';
+import { SmileOutlined, HeartOutlined, PieChartOutlined, ShopOutlined, AppleOutlined } from '@ant-design/icons';
+import { smallLogo, bigLogo } from '@/components/logo';
+import { Link } from 'umi';
+import "./index.less";
 
-/**
- *   非登陆的路由需要鉴权.
-    1.从store中取数据
-    2.取不到,从sessionStorage取,并存入store.session.state
-    3.取不到,跳转登陆页.
- * @param props 
- */
-function BasicLayout(props: any) {
-  const pathname: string = props.location.pathname;
-
-  // 登陆页不使用BasicLayout,返回登陆页本身.
-
-  // TODO:暂时不使用登录模块.
-  if (pathname === '/login') { // 登录页面不适用此布局.
-    return props.children;
-  } else {
-
-    // const sessionState = props.sessionState;
-    // let isLogined = sessionState.user?.token ?? false;
-    // if (!isLogined) {
-    //   const userInfo = Store.get(LOGINED_USER_SESSION);
-
-    //   isLogined = userInfo?.token ?? false;
-    //   if (isLogined) {
-    //     props.dispatch({
-    //       type: 'session/saveUserInfo',
-    //       payload: { user: userInfo },
-    //     });
-    //   } else {
-    //     return <Redirect to="/login" />;
-    //   }
-    // }
-  }
-
-  // 如果是子系统,则不予嵌套.直接显示子系统Layout.后续如果有多个子系统布局,则抽取成配置,自动读取.
-  if (
-    // pathname.includes('system-mgmt') ||
-    pathname.includes('demo')
-    //|| pathname.includes('application-mgmt') ||
-    // pathname.includes('service-mgmt')
-  ) {
-    return props.children;
-  }
-
-  // const [menuStatus, setMenuStatus] = useState(2)
-  const [collapse, setCollapse] = useState(true);
-
-  function toggleMenu(e: any) {
-    setCollapse(preState => !preState);
-
-    e.event.stopPropagation();
-  }
-
-  return (
-    <div>
-      <Drawer
-        className={'drawer'}
-        position={'before'}
-        closeOnOutsideClick={true}
-        openedStateMode={'shrink'} // overlap:不好用,shrink:抽屉关闭时里面的内容会尝试响应式变化,push:抽屉关闭时,里面内容不变化.
-        revealMode={'expand'} // slide, expand
-        minSize={40}
-        maxSize={272}
-        shading={false}
-        opened={collapse}
-        component={() => <LeftSider toggleMenu={toggleMenu} />}
-      >
-        <Header />
-        <div style={{ width: '100%', minWidth: '200px' }}>
-          <div className={'content-block dx-card responsive-paddings wrap'}>
-            {props.children}
-          </div>
-        </div>
-      </Drawer>
-    </div>
-  );
+const IconMap = {
+    smile: <SmileOutlined />,
+    heart: <HeartOutlined />,
+    pieChart: <PieChartOutlined />,
+    shop: <ShopOutlined />,
+    apple: <AppleOutlined />,
 };
 
-export default connect(
-  (state: { session: SessionModelState }) => ({ sessionState: state.session }),
-  (dispatch: any) => ({ dispatch }),
-)(BasicLayout);
+const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
+    menus.map(({ icon, children, ...item }) => ({
+        ...item,
+        // @ts-ignore
+        icon: icon && IconMap[icon as string],
+        children: children && loopMenuItem(children),
+    }));
+
+const generateRoute = (menus: MenuDataItem[]): Route => {
+    return menus.map(({ children, ...item }) => ({
+        ...item,
+        routes: children && generateRoute(children),
+    }))
+}
+
+class DefaultLayout extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props)
+        this.state = {
+            logoComponent: bigLogo,
+            // collapsed: false,
+        }
+    }
+
+    render() {
+        const { logoComponent } = this.state
+
+        return (<>
+            <ProLayout
+                logo={logoComponent}
+                title={'vsky'}
+                menuHeaderRender={this.menuHeaderRender}
+                theme={'light'}
+                navTheme={'light'}
+                style={{
+                    height: 500,
+                }}
+                contentWidth={'Fluid'}
+                fixedHeader={true}
+                fixSiderbar={true}
+                onCollapse={this.onCollapse}
+                // 传入umijs自动生成的约定式路由.
+                route={this.props.route}
+                // 传入菜单项数据,可以从服务器获取并加工获得.便于控制权限.
+                menuDataRender={() => loopMenuItem(menus)}
+                menuItemRender={(menuItemProps, defaultDom) => {
+                    console.log('menuItemProps', menuItemProps)
+                    if (menuItemProps.isUrl || menuItemProps.children) {
+                        return defaultDom;
+                    }
+                    if (menuItemProps.path) {
+                        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+                    }
+                    return defaultDom;
+                }}
+            >
+                {this.props.children}
+            </ProLayout>
+        </>)
+    }
+
+    onCollapse = (collapsed: boolean) => {
+        let logoComponent = bigLogo;
+        if (collapsed) {
+            logoComponent = smallLogo;
+        }
+        this.setState({ logoComponent })
+    }
+
+    menuHeaderRender = (logo: any, title: any) => (
+        <div>
+            {logo}
+            {/* {this.state.collapsed ? null : title} */}
+        </div>
+    )
+}
+export default withRouter(DefaultLayout)

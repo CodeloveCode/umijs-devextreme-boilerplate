@@ -4,7 +4,7 @@ import Button from 'devextreme-react/button';
 import UserPanel from '../userPanel';
 import './index.less';
 import { Template } from 'devextreme-react/core/template';
-import { menusForBreadcrumbs } from '@/common/menus';
+import { menusForBreadcrumbs } from '@/common/oldMenus';
 import { Breadcrumb } from 'antd';
 import { Link, useLocation } from 'umi';
 

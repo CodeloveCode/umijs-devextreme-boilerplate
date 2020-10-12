@@ -11,7 +11,7 @@ import { Button, TreeView } from 'devextreme-react';
 import Toolbar, { Item as ToolBarItem } from 'devextreme-react/toolbar';
 import './index.less';
 import { Link, withRouter } from 'umi';
-import { menuItems } from '@/common/menus';
+import { menuItems } from '@/common/oldMenus';
 
 class LeftSider extends React.Component<any, any> {
   // 把selectedItemChanged替换掉,换成<Link>

@@ -1,4 +1,4 @@
-import { menusForBreadcrumbs } from '@/common/menus';
+import { menusForBreadcrumbs } from '@/common/oldMenus';
 import { Breadcrumb } from 'antd';
 import { Link, withRouter } from 'umi';
 
