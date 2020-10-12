@@ -1,3 +1,5 @@
+import React from "react";
+import { SmileOutlined, HeartOutlined, PieChartOutlined, ShopOutlined, AppleOutlined } from '@ant-design/icons';
 
 export const menus = [
   {
@@ -40,3 +42,11 @@ export const menus = [
     ]
   },
 ];
+
+// export const IconMap = {
+//   smile: <SmileOutlined />,
+//   heart: <HeartOutlined />,
+//   pieChart: <PieChartOutlined />,
+//   shop: <ShopOutlined />,
+//   apple: <AppleOutlined />,
+// };

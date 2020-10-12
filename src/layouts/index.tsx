@@ -2,13 +2,13 @@
 import React from "react";
 import ProLayout, { MenuDataItem } from "@ant-design/pro-layout";
 import { Route } from '@ant-design/pro-layout/lib/typings';
-import { withRouter } from "react-router";
 import { menus } from '@/common/menus';
 import { SmileOutlined, HeartOutlined, PieChartOutlined, ShopOutlined, AppleOutlined } from '@ant-design/icons';
 import { smallLogo, bigLogo } from '@/components/logo';
-import { Link } from 'umi';
+import { Link, withRouter } from 'umi';
 import "./index.less";
 
+// 图标缓存.
 const IconMap = {
     smile: <SmileOutlined />,
     heart: <HeartOutlined />,

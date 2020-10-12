@@ -1,3 +1,30 @@
 // 全局的自定义样式写在这里...
 
-@primary-color:#ff5722;
+// 全局颜色在.umirc.ts中配置theme.primary-color
+
+html,body,#root {
+  height: 100vh;
+}
+
+// 降低header高度.同时:logo高度与header保持一致
+.ant-pro-global-header,.ant-pro-sider-logo {
+  height: 48px;
+}
+
+// Layout-Content.
+.ant-layout-content {
+  padding: 0px;
+  margin: 0px;
+}
+
+// pro-layout的pageContainer(PageHeaderWrapper)内容区域配置.
+.ant-pro-basicLayout-content .ant-pro-page-container{
+    margin:0px;
+    .ant-pro-page-container-children-content{
+        margin:0px;
+        padding:12px;
+        .dx-card{
+            min-height:30vh;
+        }
+    }
+}

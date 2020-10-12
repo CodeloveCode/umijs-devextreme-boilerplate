@@ -14,6 +14,9 @@ export default defineConfig({
   publicPath: '/', // 可以解决使用BrowserHistory时,刷新报错的问题.
   dva: {},
   antd: {},
+  theme: {
+    'primary-color': '#ff5722',
+  },
   chainWebpack(config) {
     config.module
       .rule('raw-loader')

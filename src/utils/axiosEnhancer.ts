@@ -9,6 +9,7 @@ import {
   notifyError,
 } from './devExtremeUtils';
 import { getDvaApp } from 'umi';
+import ServerResp from '@/common/structure/ServerResp';
 // import { history } from 'umi';
 
 const HttpStatusEnum = [
@@ -16,10 +17,22 @@ const HttpStatusEnum = [
   { status: 201, desc: '新建或修改数据成功。', name: '' },
   { status: 202, desc: '一个请求已经进入后台排队（异步任务）。', name: '' },
   { status: 204, desc: '删除数据成功。', name: '' },
-  { status: 400, desc: '发出的请求有错误，服务器没有进行新建或修改数据的操作。', name: '' },
+  {
+    status: 400,
+    desc: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
+    name: '',
+  },
   { status: 401, desc: '用户没有权限（令牌、用户名、密码错误）。', name: '' },
-  { status: 403, desc: '用户得到授权，但是访问是被禁止的。(权限不足)', name: '' },
-  { status: 404, desc: '发出的请求针对的是不存在的记录，服务器没有进行操作。', name: '' },
+  {
+    status: 403,
+    desc: '用户得到授权，但是访问是被禁止的。(权限不足)',
+    name: '',
+  },
+  {
+    status: 404,
+    desc: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
+    name: '',
+  },
   { status: 406, desc: '请求的格式不可得。', name: '' },
   { status: 410, desc: '请求的资源被永久删除，且不会再得到的。', name: '' },
   { status: 422, desc: '当创建一个对象时，发生一个验证错误。', name: '' },
@@ -38,7 +51,7 @@ const axiosInstance = _axios.create({
   },
   responseType: 'json',
   timeout: 3000000, // 超时时间.毫秒
-  withCredentials: true, // 跨域请求,是否携带cookie
+  withCredentials: false, // 跨域请求,是否携带cookie
 });
 
 /**
@@ -47,9 +60,9 @@ const axiosInstance = _axios.create({
  */
 axiosInstance.interceptors.request.use(
   function (config) {
-    if (Store.get(LOGINED_USER_SESSION)?.token) {
-      config.headers['Authorization'] = Store.get(LOGINED_USER_SESSION).token;
-    }
+    // if (Store.get(LOGINED_USER_SESSION)?.token) {
+    //   config.headers['Authorization'] = Store.get(LOGINED_USER_SESSION).token;
+    // }
 
     return config;
   },
@@ -59,11 +72,6 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
-// axiosInstance.request.onerror = (error: any) => {
-//   console.log(error)
-//   reject(new Error('Network error'))
-// }
 
 /**
  * 响应拦截器.对401,403进行处理.
@@ -77,11 +85,7 @@ axiosInstance.interceptors.response.use(
 
     // 后台接口做了处理,401时返回的也是200,需要在这里处理.
     if (response.data.code === 401) {
-      alertWarning('尚未登录或者会话超时,即将重新登录...');
-      Store.clear();
-      getDvaApp()._store.dispatch({ type: 'session/removeSession' });
-
-      window.location.href = '/login';
+      toLogin();
       return Promise.reject(new Error(response.data.message));
     }
     return response;
@@ -97,14 +101,11 @@ axiosInstance.interceptors.response.use(
     const response: AxiosResponse = error.response;
     if (response) {
       const { status, statusText } = response;
-      const errorText = HttpStatusEnum.find(item => item.status === status)?.desc ?? statusText;
+      const errorText =
+        HttpStatusEnum.find(item => item.status === status)?.desc ?? statusText;
 
       if (status === 401) {
-        alertWarning(errorText ?? '尚未登录或者会话超时,即将重新登录...');
-        Store.clear();
-        getDvaApp()._store.dispatch({ type: 'session/removeSession' });
-
-        window.location.href = '/login';
+        toLogin();
         return Promise.reject(error);
       }
 
@@ -118,11 +119,7 @@ axiosInstance.interceptors.response.use(
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
 
-      alertWarning('尚未登录或者会话超时,即将重新登录...');
-      Store.clear();
-      getDvaApp()._store.dispatch({ type: 'session/removeSession' });
-
-      window.location.href = '/login';
+      toLogin();
       return Promise.reject(error);
     } else {
       // Something happened in setting up the request that triggered an Error
@@ -134,24 +131,46 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-const ajaxPost = async function (url: string, data?: any, config?: AxiosRequestConfig) {
+function toLogin() {
+  // todo:等做登陆时再放开.
+  // alertWarning('尚未登录或者会话超时,即将重新登录...');
+  // Store.clear();
+  // getDvaApp()._store.dispatch({ type: 'session/removeSession' });
+  // window.location.href = '/login';
+}
+
+const ajaxPost = async function (
+  url: string,
+  data?: any,
+  config?: AxiosRequestConfig,
+): Promise<any> {
   const response = await axiosInstance.post(url, data, config);
   return response.data;
 };
 
-const ajaxGet = async function (url: string, config?: AxiosRequestConfig) {
+const ajaxGet = async function (
+  url: string,
+  config?: AxiosRequestConfig,
+): Promise<any> {
   const response = await axiosInstance.get(url, config);
   return response.data;
 };
 
-const ajaxPut = async function (url: string, data?: any, config?: AxiosRequestConfig) {
+const ajaxPut = async function (
+  url: string,
+  data?: any,
+  config?: AxiosRequestConfig,
+): Promise<any> {
   const response = await axiosInstance.put(url, data, config);
   return response.data;
 };
 
-const ajaxDelete = async function (url: string, config?: AxiosRequestConfig) {
+const ajaxDelete = async function (
+  url: string,
+  config?: AxiosRequestConfig,
+): Promise<any> {
   const response = await axiosInstance.delete(url, config);
   return response.data;
-}
+};
 
 export { ajaxGet, ajaxPost, ajaxPut, ajaxDelete };
