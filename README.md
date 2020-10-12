@@ -1,6 +1,6 @@
-# reactJs, devExtreme-ui project
+# vskysoft-QMS, 西宁质量管理.
 
-vskysoft-QMS, 西宁质量管理.
+基于ReactJS, devExtreme组件库 开发.
 
 ## Getting Started
 

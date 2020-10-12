@@ -43,10 +43,11 @@ export const menus = [
   },
 ];
 
-// export const IconMap = {
-//   smile: <SmileOutlined />,
-//   heart: <HeartOutlined />,
-//   pieChart: <PieChartOutlined />,
-//   shop: <ShopOutlined />,
-//   apple: <AppleOutlined />,
-// };
+// 图标缓存.
+export const IconMap = {
+  smile: <SmileOutlined />,
+  heart: <HeartOutlined />,
+  pieChart: <PieChartOutlined />,
+  shop: <ShopOutlined />,
+  apple: <AppleOutlined />,
+};

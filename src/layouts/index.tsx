@@ -2,20 +2,11 @@
 import React from "react";
 import ProLayout, { MenuDataItem } from "@ant-design/pro-layout";
 import { Route } from '@ant-design/pro-layout/lib/typings';
-import { menus } from '@/common/menus';
-import { SmileOutlined, HeartOutlined, PieChartOutlined, ShopOutlined, AppleOutlined } from '@ant-design/icons';
+import { menus, IconMap } from '@/common/menus';
 import { smallLogo, bigLogo } from '@/components/logo';
 import { Link, withRouter } from 'umi';
 import "./index.less";
 
-// 图标缓存.
-const IconMap = {
-    smile: <SmileOutlined />,
-    heart: <HeartOutlined />,
-    pieChart: <PieChartOutlined />,
-    shop: <ShopOutlined />,
-    apple: <AppleOutlined />,
-};
 
 const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
     menus.map(({ icon, children, ...item }) => ({
@@ -63,12 +54,13 @@ class DefaultLayout extends React.Component<any, any> {
                 // 传入菜单项数据,可以从服务器获取并加工获得.便于控制权限.
                 menuDataRender={() => loopMenuItem(menus)}
                 menuItemRender={(menuItemProps, defaultDom) => {
-                    console.log('menuItemProps', menuItemProps)
                     if (menuItemProps.isUrl || menuItemProps.children) {
                         return defaultDom;
                     }
                     if (menuItemProps.path) {
-                        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+                        // 顶层非目录菜单.不需要icon.defaultDom里似乎已经渲染了icon.
+                        const iconComponent = menuItemProps.pro_layout_parentKeys.length > 0 ? menuItemProps.icon : null
+                        return <Link to={menuItemProps.path}>{iconComponent}{defaultDom}</Link>;
                     }
                     return defaultDom;
                 }}
