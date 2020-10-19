@@ -139,6 +139,18 @@ function toLogin() {
   // window.location.href = '/login';
 }
 
+/**
+ * 发送Post请求.
+ * @param url 
+ * @param data js字面量对象.(json)
+ * @param config 其他Http Request配置.
+ * @example ```
+ * return ajaxPost('http://www.students.com/student', {name:'lily',gender:'female'}).then(isSuccess=>{
+ *  console.log(`result: ${isSuccess}`)
+ *  return isSuccess
+ * })
+ * ```
+ */
 const ajaxPost = async function (
   url: string,
   data?: any,
@@ -148,6 +160,18 @@ const ajaxPost = async function (
   return response.data;
 };
 
+/**
+ * 发送Get请求.
+ * @param url
+ * @param config 其他Http Request配置.
+ * @example ```
+ * const id = '1234'
+ * const url = `http://www.students.com/student/${id}`
+ * return ajaxGet(url).then(student=>{
+ *     return student
+ * })
+ * ```
+ */
 const ajaxGet = async function (
   url: string,
   config?: AxiosRequestConfig,
@@ -156,6 +180,20 @@ const ajaxGet = async function (
   return response.data;
 };
 
+/**
+ * 发送Put请求.
+ * @param url
+ * @param data js字面量对象.(json)
+ * @param config 其他Http Request配置.
+ * @example ```
+ * const id = '1234'
+ * const url = `http://www.students.com/student/${id}`
+ * return ajaxPut(url,{name:'lily',gender:'female'}).then(updatedStudent=>{
+ *     return updatedStudent
+ * })lose resource...
+ * })
+ * ```
+ */
 const ajaxPut = async function (
   url: string,
   data?: any,
@@ -165,6 +203,18 @@ const ajaxPut = async function (
   return response.data;
 };
 
+/**
+ * 发送Delete请求.
+ * @param url
+ * @param config 其他Http Request配置.
+ * @example ```
+ * const id = '1234'
+ * const url = `http://www.students.com/student/${id}`
+ * return ajaxDelete(url).then(isSuccess=>{
+ *     return isSuccess
+ * })
+ * ```
+ */
 const ajaxDelete = async function (
   url: string,
   config?: AxiosRequestConfig,

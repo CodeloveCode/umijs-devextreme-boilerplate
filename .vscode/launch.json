@@ -8,14 +8,14 @@
       "type": "firefox",
       "request": "launch",
       "reAttach": true,
-      "name": "Launch localhost",
+      "name": "Launch firefox",
       "url": "http://localhost:8000",
       "webRoot": "${workspaceFolder}"
     },
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
+      "name": "Launch chrome",
       "url": "http://localhost:8000",
       "webRoot": "${workspaceFolder}"
     }

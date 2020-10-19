@@ -2,12 +2,15 @@
 
 // 全局颜色在.umirc.ts中配置theme.primary-color
 
-html,body,#root {
+html,
+body,
+#root {
   height: 100vh;
 }
 
 // 降低header高度.同时:logo高度与header保持一致
-.ant-pro-global-header,.ant-pro-sider-logo {
+.ant-pro-global-header,
+.ant-pro-sider-logo {
   height: 48px;
 }
 
@@ -18,13 +21,28 @@ html,body,#root {
 }
 
 // pro-layout的pageContainer(PageHeaderWrapper)内容区域配置.
-.ant-pro-basicLayout-content .ant-pro-page-container{
-    margin:0px;
-    .ant-pro-page-container-children-content{
-        margin:0px;
-        padding:12px;
-        .dx-card{
-            min-height:30vh;
-        }
+.ant-pro-basicLayout-content .ant-pro-page-container {
+  margin: 0px;
+  .ant-pro-page-container-children-content {
+    margin: 0px;
+    padding: 12px;
+    .dx-card {
+      min-height: 90vh;
+      padding: 12px;
     }
+  }
+}
+
+// dataGrid自定义的刷新按钮,颜色使用主题色
+.dx-icon.dx-icon-refresh {
+  color: @primary-color;
+}
+// dataGrid自带的表头工具栏按钮,颜色使用主题色
+.dx-datagrid-header-panel .dx-datagrid-toolbar-button .dx-icon {
+  color: @primary-color;
+}
+// Popup的title使用主题色
+.dx-popup-title {
+  background-color: #d9d9d9;
+  // color: #fff;
 }

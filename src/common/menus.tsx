@@ -1,7 +1,8 @@
 import React from "react";
+import { MenuDataItem } from '@ant-design/pro-layout';
 import { SmileOutlined, HeartOutlined, PieChartOutlined, ShopOutlined, AppleOutlined } from '@ant-design/icons';
 
-export const menus = [
+export const menus: MenuDataItem[] = [
   {
     path: '/basic-config',
     name: '基础配置',
@@ -38,6 +39,18 @@ export const menus = [
         path: '/equipment-business/joborder-dispatch',
         name: '工单派发',
         icon: "heart",
+      },
+    ]
+  },
+  {
+    path: '/demo',
+    name: 'demo',
+    icon: "apple",
+    children: [
+      {
+        path: '/demo/custom-components',
+        name: '自定义dev组件',
+        icon: "smile",
       },
     ]
   },

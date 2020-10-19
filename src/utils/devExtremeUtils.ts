@@ -2,7 +2,7 @@ import notify from 'devextreme/ui/notify';
 import { alert, confirm } from 'devextreme/ui/dialog';
 
 // 成功消息通知.非模态
-export function notifySuccess(message) {
+export function notifySuccess(message: string) {
   notify(
     {
       message: message,
@@ -16,7 +16,7 @@ export function notifySuccess(message) {
   );
 }
 // 警告消息通知.非模态
-export function notifyWarning(message) {
+export function notifyWarning(message: string) {
   notify(
     {
       message: message,
@@ -31,7 +31,7 @@ export function notifyWarning(message) {
 }
 
 // 错误消息通知.非模态
-export function notifyError(message) {
+export function notifyError(message: string) {
   notify(
     {
       message: message,
@@ -49,27 +49,27 @@ export function notifyError(message) {
  * 成功弹窗
  * @param {*} message
  */
-export function alertSuccess(message): Promise<void> {
+export function alertSuccess(message: string): Promise<void> {
   return alert(message, '操作成功');
 }
 /**
  * 警告弹窗
  * @param {*} message
  */
-export function alertWarning(message): Promise<void> {
+export function alertWarning(message: string): Promise<void> {
   return alert(message, '警告!');
 }
 /**
  * 成功弹窗
  * @param {*} message
  */
-export function confirmNotify(message): Promise<boolean> {
+export function confirmNotify(message: string): Promise<boolean> {
   return confirm(message, '操作确认');
 }
 /**
- * 错误弹窗
+ * 警告确认弹窗
  * @param {*} message
  */
-export function confirmError(message): Promise<boolean> {
+export function confirmError(message: string): Promise<boolean> {
   return confirm(message, '操作确认');
 }

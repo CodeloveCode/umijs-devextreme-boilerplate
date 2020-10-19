@@ -49,6 +49,7 @@ class DefaultLayout extends React.Component<any, any> {
                 fixedHeader={true}
                 fixSiderbar={true}
                 onCollapse={this.onCollapse}
+                breadcrumbRender={this.breadcrumbRender}
                 // 传入umijs自动生成的约定式路由.
                 route={this.props.route}
                 // 传入菜单项数据,可以从服务器获取并加工获得.便于控制权限.
@@ -58,7 +59,7 @@ class DefaultLayout extends React.Component<any, any> {
                         return defaultDom;
                     }
                     if (menuItemProps.path) {
-                        // 顶层非目录菜单.不需要icon.defaultDom里似乎已经渲染了icon.
+                        // 顶层非目录菜单.不需要icon.
                         const iconComponent = menuItemProps.pro_layout_parentKeys.length > 0 ? menuItemProps.icon : null
                         return <Link to={menuItemProps.path}>{iconComponent}{defaultDom}</Link>;
                     }
@@ -77,6 +78,18 @@ class DefaultLayout extends React.Component<any, any> {
         }
         this.setState({ logoComponent })
     }
+
+    /**
+     * 给所有面包屑的最前面加上一个主页.这样顶层的非目录菜单项的页面就至少有一个面包屑.
+     * @param routes 
+     */
+    breadcrumbRender = (routes: any) => [
+        {
+            path: '/',
+            breadcrumbName: '主页',
+        },
+        ...(routes || []),
+    ]
 
     menuHeaderRender = (logo: any, title: any) => (
         <div>
