@@ -4,7 +4,7 @@ import { signIn, deleteSession } from '../pages/login/service';
 
 export interface SessionModelState {
   // loading: false, dvajs可以提供自动loading,不需要这个了.
-  user: {};
+  userInfo: {};
   appList: any[];
   error: null;
 }
@@ -26,7 +26,7 @@ const SessionModel: SessionModelType = {
   namespace: 'session',
 
   state: {
-    user: {},
+    userInfo: {},
     appList: [],
     error: null,
   },
@@ -63,7 +63,7 @@ const SessionModel: SessionModelType = {
     removeSession(state, action) {
       return {
         loading: false,
-        user: {},
+        userInfo: {},
         appList: [],
         error: null,
       };

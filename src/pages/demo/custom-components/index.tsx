@@ -1,13 +1,20 @@
 import React from 'react';
 import MultipleSelect from '@/components/MultipleSelect';
-import { products } from './data';
+import { products } from './listData';
 import { DataGrid, LoadPanel } from 'devextreme-react';
+import TreeSelect from '@/components/TreeSelect';
 
 
 
 export default () => (
     <React.Fragment>
-        <MultipleSelect
+        {/* <MultipleSelect
+            initialDataSource={products}
+            valueExpr={'ID'}
+            displayExpr={'Name'}
+            onChange={onChange}
+        /> */}
+        <TreeSelect
             initialDataSource={products}
             valueExpr={'ID'}
             displayExpr={'Name'}

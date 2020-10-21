@@ -26,6 +26,7 @@ interface IState {
  * 多选下拉框.
  * dev没有直接的MultipleSelect.只能使用DropDownBox+List模拟.
  * @version 0.1
+ * @deprecated 使用TagBox可以代替.
  */
 class MultipleSelect extends React.Component<IProps, IState> {
   private listRef: RefObject<List>;

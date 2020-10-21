@@ -1,6 +1,6 @@
 import React from 'react';
 import SingleCard from '@/layouts/singleCard';
-import { Redirect, Link } from 'umi';
+import { Redirect, Link, SessionModelState } from 'umi';
 import { connect } from 'react-redux';
 
 import Form, {
@@ -12,8 +12,6 @@ import Form, {
 } from 'devextreme-react/form';
 import LoadIndicator from 'devextreme-react/load-indicator';
 import './index.less';
-import { DeptModelState } from '../system-mgmt/department-mgmt/models';
-
 
 const emailEditorOptions = { stylingMode: 'filled', placeholder: 'Email' };
 const passwordEditorOptions = {
@@ -56,10 +54,10 @@ class LoginView extends React.Component<any, any> {
   render() {
     const {
       loading,
-      session: { user },
+      session: { userInfo },
     } = this.props;
 
-    let token = user.token;
+    let token = userInfo.token;
     if (token) {
       return <Redirect to="/" />;
     }
@@ -130,7 +128,7 @@ class LoginView extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: any, ownProps: any) => {
-  const session: DeptModelState = state.session;
+  const session: SessionModelState = state.session;
   return {
     session,
     loading: state.loading.models.session, // dvaJs自带的loading(每个model共用一个)

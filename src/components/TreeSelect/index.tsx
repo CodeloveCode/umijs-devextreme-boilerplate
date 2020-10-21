@@ -4,15 +4,22 @@ import TreeView from 'devextreme-react/tree-view';
 import dxTreeView from 'devextreme/ui/tree_view';
 
 interface IProps {
-  initialDataSource: [],
+  initialDataSource: any[],
   /**
    * 指定当前选中的条目
    */
   initialValue?: string[];
-  onValueChange: (id: string) => void;
+  valueExpr?: string | ((item: any) => string | number | boolean),
+  displayExpr?: string | ((item: any) => string),
+  placeholder?: string,
+  /**
+   * 选中 option，或 input 的 value 变化时，调用此函数
+   */
+  onChange?: (value: string[]) => void;
+  width?: number;
 }
 interface IState {
-  selectedIds: string[];
+  selectedItemKeys: string[];
   dataSource: any[];
 }
 /**
@@ -28,7 +35,7 @@ class TreeSelect extends React.Component<IProps, IState> {
     this.treeViewRef = React.createRef();
 
     this.state = {
-      selectedIds: this.props.initialValue ? this.props.initialValue : [],
+      selectedItemKeys: this.props.initialValue ? this.props.initialValue : [],
       dataSource: this.props.initialDataSource ?? [],
     };
   }
@@ -37,24 +44,26 @@ class TreeSelect extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { selectedIds, dataSource } = this.state;
+    const { valueExpr, displayExpr, placeholder, width } = this.props
+    const { selectedItemKeys, dataSource } = this.state;
 
     return (
       <DropDownBox
-        value={selectedIds}
-        valueExpr="id"
-        displayExpr="description"
-        placeholder="Select a value..."
-        showClearButton={true}
         dataSource={dataSource}
-        onValueChanged={this.syncTreeViewSelection}
+        value={selectedItemKeys}
+        valueExpr={valueExpr ?? 'value'}
+        displayExpr={displayExpr ?? 'text'}
+        placeholder={placeholder ?? "Select a value..."}
+        showClearButton={true}
+        onValueChanged={this.syncSelectionDatas}
         contentRender={this.treeViewRender}
+        width={width ?? 208}
       />
     );
   }
 
   treeViewRender = () => {
-    const { dataSource, selectedIds } = this.state;
+    const { dataSource, selectedItemKeys } = this.state;
     return (
       <TreeView
         dataSource={dataSource}
@@ -68,21 +77,21 @@ class TreeSelect extends React.Component<IProps, IState> {
         selectNodesRecursive={false}
         displayExpr={'description'}
         selectByClick={true}
-        selectedItemKeys={selectedIds}
-        onContentReady={this.syncTreeViewSelection}
+        selectedItemKeys={selectedItemKeys}
+        onContentReady={this.syncSelectionDatas}
         onItemSelectionChanged={this.treeView_itemSelectionChanged}
       />
     );
   };
 
-  syncTreeViewSelection = (e: any) => {
-    let selectedIds = e.value ?? this.state.selectedIds;
-    this.setState({ selectedIds: selectedIds });
+  syncSelectionDatas = (e: any) => {
+    let selectedItemKeys = e.value ?? this.state.selectedItemKeys;
+    this.setState({ selectedItemKeys: selectedItemKeys });
   };
 
   treeView_itemSelectionChanged = (e: any) => {
-    this.props.onValueChange(e.itemData.id);
-    this.setState({ selectedIds: [e.itemData.id] });
+    this.props?.onChange(e.itemData.id);
+    this.setState({ selectedItemKeys: [e.itemData.id] });
   };
 
   get treeView(): dxTreeView {

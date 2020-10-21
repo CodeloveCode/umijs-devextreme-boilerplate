@@ -52,6 +52,11 @@ export const menus: MenuDataItem[] = [
         name: '自定义dev组件',
         icon: "smile",
       },
+      {
+        path: '/demo/dev-file-manager',
+        name: 'file-manager',
+        icon: "smile",
+      },
     ]
   },
 ];

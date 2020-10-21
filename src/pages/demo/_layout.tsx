@@ -24,6 +24,10 @@ export default (props: any) => {
     e.event.stopPropagation();
   }
 
+  if (true) {
+    return (props.children)
+  }
+
   return (
     <div>
       <Drawer
