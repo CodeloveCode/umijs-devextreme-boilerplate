@@ -4,6 +4,12 @@
 
 ## Getting Started
 
+* 使用前准备
+
+删除pages目录下除login, 404.tsx, document.ejs, index.tsx以外的所有目录
+/src/configs/menus.ts中配置需要的菜单
+/src/configs/url.ts中配置接口用到的url
+
 * 安装依赖 tyarn
 
 PS:[tyarn的安装](npm install yarn tyarn -g)
