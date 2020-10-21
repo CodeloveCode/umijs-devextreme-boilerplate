@@ -1,7 +1,7 @@
 import _axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import Store from './store';
 import notify from 'devextreme/ui/notify';
-import { LOGINED_USER_SESSION } from '@/common/constants';
+import { LOGINED_USER_SESSION } from '@/configs/constants';
 import {
   alertSuccess,
   alertWarning,
@@ -9,7 +9,7 @@ import {
   notifyError,
 } from './devExtremeUtils';
 import { getDvaApp } from 'umi';
-import ServerResp from '@/common/structure/ServerResp';
+import ServerResp from '@/configs/structure/ServerResp';
 // import { history } from 'umi';
 
 const HttpStatusEnum = [

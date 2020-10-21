@@ -1,10 +1,10 @@
 // 局域网开发和测试环境.
 
-let uri
-let uri_company
-let uri_monitor
-let oss_uri
-let uri_login
+let uri = ''
+let uri_company = ''
+let uri_monitor = ''
+let oss_uri = ''
+let uri_login = ''
 if ('development' === process.env.NODE_ENV) {
     uri = 'http://118.31.184.21:9009'; // 系统微服务
     uri_company = 'http://118.31.184.21:9009'; // 企业微服务

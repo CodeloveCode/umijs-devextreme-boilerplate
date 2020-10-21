@@ -2,7 +2,7 @@ import React from 'react';
 import ScrollView from 'devextreme-react/scroll-view';
 import './index.less';
 // import { PUBLIC_URL } from '../../serviceWorker';
-import backGroundUrl from '../../assets/img/background.png';
+import backGroundUrl from '../../../assets/img/background.png';
 
 const styles = {
   img: {

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, Redirect, withRouter, connect } from 'umi';
-import LeftSider from '@/components/leftSider';
-import Header from '@/components/header';
+import LeftSider from './leftSider';
+import Header from './header';
 import { Drawer } from 'devextreme-react';
 import { SessionModelState } from '@/models/session';
 import Store from '@/utils/store';
-import { LOGINED_USER_SESSION } from '@/common/constants';
-import './index.less';
+import { LOGINED_USER_SESSION } from '@/configs/constants';
+import './index-dev.less';
 
 interface tabConfig {
   id: number;

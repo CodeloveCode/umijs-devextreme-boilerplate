@@ -1,6 +1,6 @@
-import { uri, uri_login } from '../../common/url';
+import { uri, uri_login } from '../../configs/url';
 import Store from '../../utils/store';
-import { LOGINED_USER_SESSION } from '@/common/constants';
+import { LOGINED_USER_SESSION } from '@/configs/constants';
 import { ajaxDelete, ajaxGet, ajaxPost } from '@/utils/axiosEnhancer';
 
 const url_login = uri_login + '/portal/user/login';

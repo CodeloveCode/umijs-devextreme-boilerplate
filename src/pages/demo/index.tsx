@@ -1,6 +1,7 @@
-import { menusForBreadcrumbs } from '@/common/oldMenus';
+import { menusForBreadcrumbs } from './devLayout/oldMenus';
 import { Breadcrumb } from 'antd';
 import { Link, withRouter } from 'umi';
+import React from 'react';
 
 export default () => <Home />;
 

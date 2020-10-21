@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import LeftSider from '@/components/leftSider';
-import Header from '@/components/header';
+import LeftSider from './devLayout/leftSider';
+import Header from './devLayout/header';
 import { Link, Redirect, withRouter } from 'umi';
 import { connect } from 'react-redux';
 import { Drawer } from 'devextreme-react';

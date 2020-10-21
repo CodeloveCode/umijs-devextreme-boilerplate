@@ -1,5 +1,5 @@
 import React from 'react';
-import SingleCard from '@/layouts/singleCard';
+import SingleCard from './singleCard';
 import { Redirect, Link, SessionModelState } from 'umi';
 import { connect } from 'react-redux';
 

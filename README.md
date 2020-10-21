@@ -20,7 +20,7 @@ PS:[cnpm的安装](https://developer.aliyun.com/mirror/NPM?from=tnpm)
 mock: false,
 ```
 
-修改/src/common/url.ts中的uri为正式环境的服务器接口.
+修改/src/configs/url.ts中的uri为正式环境的服务器接口.
 
 npm run build
 

@@ -1,6 +1,6 @@
-import { getDvaApp, history, request, useStore } from 'umi';
+import { getDvaApp, history, useStore } from 'umi';
 import { RequestInterceptor } from 'umi-request';
-import { LOGINED_USER_SESSION } from '@/common/constants';
+import { LOGINED_USER_SESSION } from '@/configs/constants';
 import Store from './store';
 import { notifyError } from './devExtremeUtils';
 

@@ -1,6 +1,20 @@
 import React from "react";
 import { MenuDataItem } from '@ant-design/pro-layout';
-import { SmileOutlined, HeartOutlined, PieChartOutlined, ShopOutlined, AppleOutlined } from '@ant-design/icons';
+import {
+  ApartmentOutlined,
+  ApiOutlined,
+  AppleOutlined,
+  CarryOutOutlined,
+  ControlOutlined,
+  ExperimentOutlined,
+  HeartOutlined,
+  HistoryOutlined,
+  PieChartOutlined,
+  ShopOutlined,
+  SmileOutlined,
+  StockOutlined,
+  HomeOutlined,
+} from '@ant-design/icons';
 
 export const menus: MenuDataItem[] = [
   {
@@ -61,11 +75,21 @@ export const menus: MenuDataItem[] = [
   },
 ];
 
-// 图标缓存.
+/**
+ * 图标缓存.
+ */
 export const IconMap = {
   smile: <SmileOutlined />,
   heart: <HeartOutlined />,
   pieChart: <PieChartOutlined />,
   shop: <ShopOutlined />,
   apple: <AppleOutlined />,
+  apartment: <ApartmentOutlined />,
+  control: <ControlOutlined />,
+  api: <ApiOutlined />,
+  stock: <StockOutlined />,
+  history: <HistoryOutlined />,
+  experiment: <ExperimentOutlined />,
+  home: <HomeOutlined />,
+  carry: <CarryOutOutlined />,
 };

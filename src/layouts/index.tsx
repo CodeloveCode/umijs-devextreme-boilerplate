@@ -2,7 +2,7 @@
 import React from "react";
 import ProLayout, { MenuDataItem } from "@ant-design/pro-layout";
 import { Route } from '@ant-design/pro-layout/lib/typings';
-import { menus, IconMap } from '@/common/menus';
+import { menus, IconMap } from '@/configs/menus';
 import { smallLogo, bigLogo } from '@/components/logo';
 import { Link, withRouter } from 'umi';
 import "./index.less";
