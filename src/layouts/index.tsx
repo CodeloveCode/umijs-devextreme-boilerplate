@@ -81,15 +81,23 @@ class DefaultLayout extends React.Component<any, any> {
 
     /**
      * 给所有面包屑的最前面加上一个主页.这样顶层的非目录菜单项的页面就至少有一个面包屑.
-     * @param routes 
+     * @param routes
      */
-    breadcrumbRender = (routes: any) => [
-        {
-            path: '/',
-            breadcrumbName: '主页',
-        },
-        ...(routes || []),
-    ]
+    breadcrumbRender = (routes: any) => {
+        // 许海燕:让面包屑不可点击.
+        // 去掉path,这样点不了了.
+        const newRoutes = routes.map((route: any) => {
+            delete route.path
+            return route
+        })
+        return [
+            {
+                // path: '/',
+                breadcrumbName: '主页',
+            },
+            ...(newRoutes || []),
+        ]
+    };
 
     menuHeaderRender = (logo: any, title: any) => (
         <div>
