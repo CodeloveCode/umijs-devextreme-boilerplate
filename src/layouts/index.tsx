@@ -7,7 +7,11 @@ import { smallLogo, bigLogo } from '@/components/logo';
 import { Link, withRouter } from 'umi';
 import "./index.less";
 
-
+/**
+ * 菜单数据预处理.
+ * 加工从服务器端获得的menu数据,替换icon为Icon组件.添加权限等.
+ * @param menus 
+ */
 const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
     menus.map(({ icon, children, ...item }) => ({
         ...item,
@@ -16,19 +20,14 @@ const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
         children: children && loopMenuItem(children),
     }));
 
-const generateRoute = (menus: MenuDataItem[]): Route => {
-    return menus.map(({ children, ...item }) => ({
-        ...item,
-        routes: children && generateRoute(children),
-    }))
-}
-
+/**
+ * @deprecated 路由由umijs约定式管理.不需要Layout处理.
+ */
 class DefaultLayout extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
             logoComponent: bigLogo,
-            // collapsed: false,
         }
     }
 
@@ -52,19 +51,8 @@ class DefaultLayout extends React.Component<any, any> {
                 breadcrumbRender={this.breadcrumbRender}
                 // 传入umijs自动生成的约定式路由.
                 route={this.props.route}
-                // 传入菜单项数据,可以从服务器获取并加工获得.便于控制权限.
                 menuDataRender={() => loopMenuItem(menus)}
-                menuItemRender={(menuItemProps, defaultDom) => {
-                    if (menuItemProps.isUrl || menuItemProps.children) {
-                        return defaultDom;
-                    }
-                    if (menuItemProps.path) {
-                        // 顶层非目录菜单.不需要icon.
-                        const iconComponent = menuItemProps.pro_layout_parentKeys.length > 0 ? menuItemProps.icon : null
-                        return <Link to={menuItemProps.path}>{iconComponent}{defaultDom}</Link>;
-                    }
-                    return defaultDom;
-                }}
+                menuItemRender={this.menuItemRender}
             >
                 {this.props.children}
             </ProLayout>
@@ -77,6 +65,18 @@ class DefaultLayout extends React.Component<any, any> {
             logoComponent = smallLogo;
         }
         this.setState({ logoComponent })
+    }
+
+    menuItemRender = (menuItemProps: MenuDataItem & { isUrl: boolean }, defaultDom: React.ReactNode): React.ReactNode => {
+        if (menuItemProps.isUrl || menuItemProps.children) {
+            return defaultDom;
+        }
+        if (menuItemProps.path) {
+            // 顶层非目录菜单.不需要icon.
+            const iconComponent = menuItemProps.pro_layout_parentKeys.length > 0 ? menuItemProps.icon : null
+            return <Link to={menuItemProps.path}>{iconComponent}{defaultDom}</Link>;
+        }
+        return defaultDom;
     }
 
     /**

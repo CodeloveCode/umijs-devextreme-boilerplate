@@ -69,7 +69,12 @@ export const menus: MenuDataItem[] = [
       {
         path: '/demo/dev-file-manager',
         name: 'file-manager',
-        icon: "smile",
+        icon: "apple",
+      },
+      {
+        path: '/demo/test-outer-configs',
+        name: '独立配置文件',
+        icon: "heart",
       },
     ]
   },
