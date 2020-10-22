@@ -1,9 +1,11 @@
-import { uri, uri_login } from '../../configs/url';
 import Store from '../../utils/store';
 import { LOGINED_USER_SESSION } from '@/configs/constants';
 import { ajaxDelete, ajaxGet, ajaxPost } from '@/utils/axiosEnhancer';
 
-const url_login = uri_login + '/portal/user/login';
+const _document: any = document
+const configs = _document.$configs.urls
+
+const url_login = configs.uri_login + '/portal/user/login';
 // const url_profile = uri + '/sys/profile';
 // const url_logout = uri + '/sys/logout';
 // const url_userList = uri + '/sys/user';
