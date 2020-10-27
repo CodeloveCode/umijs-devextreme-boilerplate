@@ -1,6 +1,9 @@
 import Store from './store';
-import configs from '@/common/configs';
+import configs from '@/configs/configs';
 
+/**
+ * 从public/configs.js配置文件中读取所有urls
+ */
 export function getUrls(): any {
   return getConfigs().urls;
 }
@@ -16,9 +19,7 @@ export function getConfigs(): any {
   }
 }
 
-/**
- * 从public/configs.js配置文件中读取所有urls
- */
+
 export function getUrlByName(urlName: string): string {
   const urls = getUrls();
   const url = urls[urlName] as string;
