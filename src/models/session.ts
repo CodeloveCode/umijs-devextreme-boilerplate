@@ -1,11 +1,10 @@
 import { notifyError } from '@/utils/devExtremeUtils';
 import { Effect, Reducer } from 'umi';
-import { signIn, deleteSession } from '../pages/login/service';
+import { deleteSession, fetchUserInfo } from '../pages/login/service';
 
 export interface SessionModelState {
   // loading: false, dvajs可以提供自动loading,不需要这个了.
   userInfo: {};
-  appList: any[];
   error: null;
 }
 
@@ -13,7 +12,7 @@ export interface SessionModelType {
   namespace: 'session';
   state: SessionModelState;
   effects: {
-    login: Effect;
+    getUserProfile: Effect;
     logout: Effect;
   };
   reducers: {
@@ -27,15 +26,14 @@ const SessionModel: SessionModelType = {
 
   state: {
     userInfo: {},
-    appList: [],
     error: null,
   },
 
   effects: {
-    *login({ payload: { account, password } }, { call, put }) {
+    *getUserProfile({ payload: { token } }, { call, put }) {
       try {
-        const userInfo = yield call(signIn, account, password);
-        yield put({ type: 'saveUserInfo', payload: { user: userInfo } });
+        const userInfo = yield call(fetchUserInfo, token);
+        yield put({ type: 'saveUserInfo', payload: { userInfo } });
       } catch (error) {
         console.log(error.message);
         notifyError(error.message);
@@ -64,7 +62,6 @@ const SessionModel: SessionModelType = {
       return {
         loading: false,
         userInfo: {},
-        appList: [],
         error: null,
       };
     },

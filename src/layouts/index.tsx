@@ -4,8 +4,11 @@ import ProLayout, { MenuDataItem } from "@ant-design/pro-layout";
 import { Route } from '@ant-design/pro-layout/lib/typings';
 import { menus, IconMap } from '@/configs/menus';
 import { smallLogo, bigLogo } from '@/components/logo';
-import { Link, withRouter } from 'umi';
+import { connect, Link, SessionModelState, withRouter } from 'umi';
 import "./index.less";
+import HeaderRightContent from '@/components/HeaderRightContent';
+import { LOGINED_USER_SESSION } from '@/configs/constants';
+import Store from '@/utils/store';
 
 /**
  * 菜单数据预处理.
@@ -31,7 +34,40 @@ class DefaultLayout extends React.Component<any, any> {
         }
     }
 
+
     render() {
+        const { location, sessionState, children, dispatch } = this.props;
+        const pathname: string = location.pathname;
+
+        // TODO:临时使用环境变量
+        // if ('development' === process.env.NODE_ENV) {
+        //   // 登陆页不使用此布局,而是返回登陆页本身组件.
+        //   if (pathname === '/login') {
+        //     return children;
+        //   } else {
+        //     // 非登陆的路由需要鉴权.
+        //     // 从store中取数据
+        //     // 取不到,从sessionStorage取,并存入store.session.state
+        //     // 取不到,跳转登陆页.
+        //     // const sessionState = useSelector((state: any) => state.session)
+        //     let isLogined = sessionState.userInfo?.token ?? false;
+        //     if (!isLogined) {
+        //       const userInfo = Store.get(LOGINED_USER_SESSION);
+
+        //       isLogined = userInfo?.token ?? false;
+        //       if (isLogined) {
+        //         dispatch({
+        //           type: 'session/saveUserInfo',
+        //           payload: { userInfo },
+        //         });
+        //       } else {
+        //         return <Redirect to="/login" />;
+        //       }
+        //     }
+        //   }
+        // }
+
+        const userProfile = Store.get(LOGINED_USER_SESSION)?.profile;
         const { logoComponent } = this.state
 
         return (<>
@@ -53,6 +89,9 @@ class DefaultLayout extends React.Component<any, any> {
                 route={this.props.route}
                 menuDataRender={() => loopMenuItem(menus)}
                 menuItemRender={this.menuItemRender}
+                rightContentRender={() => (
+                    <HeaderRightContent userProfile={userProfile} />
+                )}
             >
                 {this.props.children}
             </ProLayout>
@@ -106,4 +145,17 @@ class DefaultLayout extends React.Component<any, any> {
         </div>
     )
 }
-export default withRouter(DefaultLayout)
+export default withRouter(
+    connect(
+        (state: { session: SessionModelState }) => {
+            return {
+                sessionState: state.session,
+            };
+        },
+        dispatch => {
+            return {
+                dispatch,
+            };
+        },
+    )(DefaultLayout),
+);
