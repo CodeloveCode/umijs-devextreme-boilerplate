@@ -10,6 +10,7 @@ import {
 } from './devExtremeUtils';
 import { getDvaApp } from 'umi';
 import ServerResp from '@/configs/structure/ServerResp';
+import qs from 'qs';
 // import { history } from 'umi';
 
 const HttpStatusEnum = [
@@ -60,9 +61,9 @@ const axiosInstance = _axios.create({
  */
 axiosInstance.interceptors.request.use(
   function (config) {
-    // if (Store.get(LOGINED_USER_SESSION)?.token) {
-    //   config.headers['Authorization'] = Store.get(LOGINED_USER_SESSION).token;
-    // }
+    if (Store.get(LOGINED_USER_SESSION)?.token) {
+      config.headers['Authorization'] = Store.get(LOGINED_USER_SESSION).token;
+    }
 
     return config;
   },
@@ -84,7 +85,7 @@ axiosInstance.interceptors.response.use(
     // Do something with response data
 
     // 后台接口做了处理,401时返回的也是200,需要在这里处理.
-    if (response.data.code === 401) {
+    if (response?.data?.code === 401) {
       toLogin();
       return Promise.reject(new Error(response.data.message));
     }
@@ -101,8 +102,6 @@ axiosInstance.interceptors.response.use(
     const response: AxiosResponse = error.response;
     if (response) {
       const { status, statusText } = response;
-      const errorText =
-        HttpStatusEnum.find(item => item.status === status)?.desc ?? statusText;
 
       if (status === 401) {
         toLogin();
@@ -110,6 +109,8 @@ axiosInstance.interceptors.response.use(
       }
 
       if (status === 403) {
+        const errorText =
+          HttpStatusEnum.find(item => item.status === status)?.desc ?? statusText;
         alertWarning(errorText ?? '权限不足...');
         return Promise.reject(error);
       }
@@ -141,6 +142,7 @@ function toLogin() {
 
 /**
  * 发送Post请求.
+ * 'Content-Type':'application/json'
  * @param url 
  * @param data js字面量对象.(json)
  * @param config 其他Http Request配置.
@@ -162,6 +164,7 @@ const ajaxPost = async function (
 
 /**
  * 发送Get请求.
+ * 'Content-Type':'application/json'
  * @param url
  * @param config 其他Http Request配置.
  * @example ```
@@ -182,6 +185,7 @@ const ajaxGet = async function (
 
 /**
  * 发送Put请求.
+ * 'Content-Type':'application/json'
  * @param url
  * @param data js字面量对象.(json)
  * @param config 其他Http Request配置.
@@ -205,6 +209,7 @@ const ajaxPut = async function (
 
 /**
  * 发送Delete请求.
+ * 'Content-Type':'application/x-www-form-urlencoded'
  * @param url
  * @param config 其他Http Request配置.
  * @example ```
@@ -223,4 +228,28 @@ const ajaxDelete = async function (
   return response.data;
 };
 
-export { ajaxGet, ajaxPost, ajaxPut, ajaxDelete };
+/**
+ * 发送参数格式为form的Post请求.
+ * 'Content-Type':'application/x-www-form-urlencoded'
+ * @param url 
+ * @param data js字面量对象.(json)
+ * @param config 其他Http Request配置.
+ * @example ```
+ * return ajaxPostViaFormContentType('http://www.students.com/student', {name:'lily',gender:'female'}).then(isSuccess=>{
+ *  console.log(`result: ${isSuccess}`)
+ *  return isSuccess
+ * })
+ * ```
+ */
+const ajaxPostViaFormContentType = async function (
+  url: string,
+  data?: any,
+  config?: AxiosRequestConfig,
+): Promise<any> {
+  data = qs.stringify(data)
+  const response = await axiosInstance.post(url, data, config);
+  return response.data;
+};
+
+
+export { ajaxGet, ajaxPost, ajaxPut, ajaxDelete, ajaxPostViaFormContentType };
