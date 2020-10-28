@@ -41,15 +41,15 @@ locale(navigator.language);
 
 
 // 读取外部配置文件.
-if (process.env.NODE_ENV === 'development') {
-  const configs = require('../public/configs.js')
-  Object.defineProperty(document, '$configs', { value: configs, writable: false })
-} else {
-  fetch('./configs.js', { method: 'GET' }).then(response => response.text()).then(text => {
-    const configs = eval(text)
-    Object.defineProperty(document, '$configs', { value: configs, writable: false })
-  }).catch(error => {
-    console.error(JSON.stringify(error))
-  })
-}
+// if (process.env.NODE_ENV === 'development') {
+//   const configs = require('../public/configs.js')
+//   Object.defineProperty(document, '$configs', { value: configs, writable: false })
+// } else {
+//   fetch('./configs.js', { method: 'GET' }).then(response => response.text()).then(text => {
+//     const configs = eval(text)
+//     Object.defineProperty(document, '$configs', { value: configs, writable: false })
+//   }).catch(error => {
+//     console.error(JSON.stringify(error))
+//   })
+// }
 

@@ -4,7 +4,7 @@ const path = require('path');
 
 export default defineConfig({
   mock: false,
-  request: false,
+  request: {},
   title: 'vskySoft',
   favicon: '/assets/favicon.ico',
   // history: { type: 'hash' },
