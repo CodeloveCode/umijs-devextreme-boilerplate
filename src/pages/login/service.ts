@@ -52,6 +52,10 @@ export async function signIn(account: string, password: string) {
   return userInfo;
 }
 
+export function fetchUserInfo() {
+
+}
+
 /**
  * 根据登陆得到的授权码,获取用户信息.
  * @param token
