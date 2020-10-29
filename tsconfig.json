@@ -8,13 +8,17 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "baseUrl": "./",
-    "allowJs": true,
+    // "allowJs": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
+    // "allowSyntheticDefaultImports": true,
     "strict": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@@/*": ["src/.umi/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@@/*": [
+        "src/.umi/*"
+      ]
     }
   },
   "include": [
@@ -24,5 +28,8 @@
     ".umirc.ts",
     "typings.d.ts"
   ],
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
