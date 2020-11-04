@@ -1,55 +1,29 @@
 import React from 'react';
-import SingleCard from './singleCard';
-import { Redirect, Link, SessionModelState } from 'umi';
+import { Redirect, Link, withRouter, SessionModelState } from 'umi';
 import { connect } from 'react-redux';
 
-import Form, {
-  Item,
-  Label,
-  ButtonItem,
-  ButtonOptions,
-  RequiredRule,
-} from 'devextreme-react/form';
 import LoadIndicator from 'devextreme-react/load-indicator';
 import './index.less';
+import { LOGINED_USER_SESSION } from '@/configs/constants';
+import Store from '@/utils/store';
+import { LoadPanel } from 'devextreme-react';
+import { getUrlByName } from '@/utils/configsReader';
 
-const emailEditorOptions = { stylingMode: 'filled', placeholder: 'Email' };
-const passwordEditorOptions = {
-  stylingMode: 'filled',
-  placeholder: 'Password',
-  mode: 'password',
-};
-const rememberMeEditorOptions = {
-  text: 'Remember me',
-  elementAttr: { class: 'form-text' },
-};
+const portal_system_url = getUrlByName('portal_system_url');
 
 class LoginView extends React.Component<any, any> {
-  private formRef: any;
-
   constructor(props: any) {
     super(props);
-
-    this.formRef = React.createRef();
   }
 
-  get form() {
-    return this.formRef.current.instance;
+  componentDidMount() {
+    let token = this.props.location.query.token as string;
+    if (token) {
+      token = token.replace('Bearer ', '');
+      Store.set(LOGINED_USER_SESSION, { token });
+      this.getUserProfile(token);
+    }
   }
-
-  onSubmit = (e: any) => {
-    e.preventDefault();
-    let { account, password, rememberme } = this.form.option('formData');
-    rememberme = rememberme ? 1 : 0;
-    this.props.dispatch({
-      type: 'session/login',
-      payload: { account, password, rememberme },
-    });
-  };
-
-  onCreateAccountClick = () => {
-    this.props.history.push('/create-account');
-  };
 
   render() {
     const {
@@ -57,74 +31,34 @@ class LoginView extends React.Component<any, any> {
       session: { userInfo },
     } = this.props;
 
-    let token = userInfo.token;
-    if (token) {
+
+    console.log('userInfo?.profile', userInfo?.profile);
+
+    if (userInfo?.profile) {
+      // 进入首页
       return <Redirect to="/" />;
     }
 
+    // TODO:三秒后,重定向到Portal
     return (
-      <SingleCard title="Sign In">
-        <form className={'login-form'} onSubmit={this.onSubmit}>
-          <Form ref={this.formRef} disabled={loading}>
-            <Item
-              dataField={'account'}
-              editorType={'dxTextBox'}
-              editorOptions={emailEditorOptions}
-            >
-              <RequiredRule message="account is required" />
-              <Label visible={false} />
-            </Item>
-            <Item
-              dataField={'password'}
-              editorType={'dxTextBox'}
-              editorOptions={passwordEditorOptions}
-            >
-              <RequiredRule message="Password is required" />
-              <Label visible={false} />
-            </Item>
-            <Item
-              dataField={'rememberme'}
-              editorType={'dxCheckBox'}
-              editorOptions={rememberMeEditorOptions}
-            >
-              <Label visible={false} />
-            </Item>
-            <ButtonItem>
-              <ButtonOptions
-                width={'100%'}
-                type={'default'}
-                useSubmitBehavior={true}
-              >
-                <span className="dx-button-text">
-                  {loading ? (
-                    <LoadIndicator
-                      width={'24px'}
-                      height={'24px'}
-                      visible={true}
-                    />
-                  ) : (
-                      'Sign In'
-                    )}
-                </span>
-              </ButtonOptions>
-            </ButtonItem>
-            <Item>
-              <div className={'link'}>
-                <Link to={'/reset-password'}>Forgot password?</Link>
-              </div>
-            </Item>
-            <ButtonItem>
-              <ButtonOptions
-                text={'Create an account'}
-                width={'100%'}
-                onClick={this.onCreateAccountClick}
-              />
-            </ButtonItem>
-          </Form>
-        </form>
-      </SingleCard>
+      <>
+        <LoadIndicator visible={this.props.loading} />
+        <h1>尚未登录,5秒后即将转到Portal登录...</h1>
+        <a href={portal_system_url}>http://118.31.184.21:6543/portal</a>
+      </>
     );
   }
+
+  /**
+   * 用户已在Portal门户网站登录,现在带着token过来.需要获取用户权限.
+   */
+  getUserProfile = (token: string) => {
+    this.props.dispatch({ type: 'session/getUserProfile', payload: { token } });
+  };
+
+  redirectToPortal = () => {
+    this.props.history.push(portal_system_url);
+  };
 }
 
 const mapStateToProps = (state: any, ownProps: any) => {
@@ -141,4 +75,6 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
   };
 };
 
-export default connect(mapStateToProps)(LoginView);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(LoginView),
+);

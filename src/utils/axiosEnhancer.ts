@@ -120,7 +120,6 @@ axiosInstance.interceptors.response.use(
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
 
-      toLogin();
       return Promise.reject(error);
     } else {
       // Something happened in setting up the request that triggered an Error
@@ -133,11 +132,10 @@ axiosInstance.interceptors.response.use(
 );
 
 function toLogin() {
-  // todo:等做登陆时再放开.
-  // alertWarning('尚未登录或者会话超时,即将重新登录...');
-  // Store.clear();
-  // getDvaApp()._store.dispatch({ type: 'session/removeSession' });
-  // window.location.href = '/login';
+  alertWarning('尚未登录或者会话超时,即将重新登录...');
+  Store.clear();
+  getDvaApp()._store.dispatch({ type: 'session/removeSession' });
+  window.location.href = '/login';
 }
 
 /**
