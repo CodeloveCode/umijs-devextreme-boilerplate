@@ -1,10 +1,11 @@
+import { UserSession } from '@/pages/login/DTO';
 import { notifyError } from '@/utils/devExtremeUtils';
 import { Effect, Reducer } from 'umi';
 import { deleteSession, fetchUserInfo } from '../pages/login/service';
 
 export interface SessionModelState {
   // loading: false, dvajs可以提供自动loading,不需要这个了.
-  userInfo: {};
+  userInfo: UserSession;
   error: null;
 }
 
