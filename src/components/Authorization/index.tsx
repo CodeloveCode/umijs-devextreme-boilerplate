@@ -15,10 +15,10 @@ interface IProp {
  * 根据授权决定是否可以看到子组件.
  */
 function Authorization(props: IProp) {
-    const apis = props.session.userInfo.profile.permissions.apis
+    const apis = props.session.userInfo?.profile.permissions.apis
 
     let isAuthorized = false
-    if (apis.includes(props.permission)) {
+    if (apis && apis.includes(props.permission)) {
         isAuthorized = true
     }
     return (<>
