@@ -5,7 +5,7 @@ import { deleteSession, fetchUserInfo } from '../pages/login/service';
 
 export interface SessionModelState {
   // loading: false, dvajs可以提供自动loading,不需要这个了.
-  userInfo: UserSession;
+  userInfo?: UserSession;
   error: null;
 }
 
@@ -26,7 +26,7 @@ const SessionModel: SessionModelType = {
   namespace: 'session',
 
   state: {
-    userInfo: {},
+    userInfo: undefined,
     error: null,
   },
 
@@ -62,7 +62,7 @@ const SessionModel: SessionModelType = {
     removeSession(state, action) {
       return {
         loading: false,
-        userInfo: {},
+        userInfo: undefined,
         error: null,
       };
     },

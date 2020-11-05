@@ -61,31 +61,32 @@ class DefaultLayout extends React.Component<any, any> {
         const { location, sessionState, children, dispatch } = this.props;
         const pathname: string = location.pathname;
 
-        // if ('development' === process.env.NODE_ENV) {
-        // 登陆页不使用此布局,而是返回登陆页本身组件.
-        if (pathname === '/login') {
-            return children;
-        } else {
-            // 非登陆的路由需要鉴权.
-            // 从store中取数据
-            // 取不到,从sessionStorage取,并存入store.session.state
-            // 取不到,跳转登陆页.
-            // const sessionState = useSelector((state: any) => state.session)
-            let isLogined = sessionState.userInfo?.token ?? false;
-            if (!isLogined) {
-                const userInfo = Store.get(LOGINED_USER_SESSION);
+        // if ('production' === process.env.NODE_ENV) {
+        //     // 登陆页不使用此布局,而是返回登陆页本身组件.
+        //     if (pathname === '/login') {
+        //         return children;
+        //     } else {
+        //         // 非登陆的路由需要鉴权.
+        //         // 从store中取数据
+        //         // 取不到,从sessionStorage取,并存入store.session.state
+        //         // 取不到,跳转登陆页.
+        //         // const sessionState = useSelector((state: any) => state.session)
+        //         let isLogined = sessionState.userInfo?.token ?? false;
+        //         if (!isLogined) {
+        //             const userInfo = Store.get(LOGINED_USER_SESSION);
 
-                isLogined = userInfo?.token ?? false;
-                if (isLogined) {
-                    dispatch({
-                        type: 'session/saveUserInfo',
-                        payload: { userInfo },
-                    });
-                } else {
-                    return <Redirect to="/login" />;
-                }
-            }
-        }
+        //             isLogined = userInfo?.token ?? false;
+        //             if (isLogined) {
+        //                 dispatch({
+        //                     type: 'session/saveUserInfo',
+        //                     payload: { userInfo },
+        //                 });
+        //             } else {
+        //                 return <Redirect to="/login" />;
+        //             }
+        //         }
+        //         // TODO:把用户的api权限,菜单权限等存入Context,传给子组件.方便Authorization子组件调用进行鉴权.
+        //     }
         // }
 
         const userProfile = Store.get(LOGINED_USER_SESSION)?.profile;

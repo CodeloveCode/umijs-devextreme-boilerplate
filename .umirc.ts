@@ -28,20 +28,25 @@ export default defineConfig({
       .loader('raw-loader');
   },
   proxy: {
-    '/out-website': {
-      target: 'http://118.31.184.21:8899/',
-      changeOrigin: true,
-      pathRewrite: { '^/out-website': '' },
-    },
-    '/bbb': {
-      target: 'https://www.baidu.com/',
-      changeOrigin: true,
-      pathRewrite: { '^/bbb': '' },
-    },
-    '/api/v1': {
-      target: 'http://118.31.184.21:9009/',
-      changeOrigin: true,
-      pathRewrite: { '^/api/v1': '' },
-    },
+    // '/out-website': {
+    //   target: 'http://118.31.184.21:8899/',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^/out-website': '' },
+    // },
+    // '/bbb': {
+    //   target: 'https://www.baidu.com/',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^/bbb': '' },
+    // },
+    // '/api/v1': {
+    //   target: 'http://118.31.184.21:9009/',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^/api/v1': '' },
+    // },
+    // '/api/v1': {
+    //   target: 'http://localhost:8080',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^/api/v1': '' },
+    // },
   },
 });
