@@ -18,11 +18,12 @@ import __configs from "../../configs/configs";
  */
 export function canAccess(resourcePermission: string) {
     const sessionState = getDvaApp()._store.getState().session as SessionModelState;
-    let apis = sessionState.userInfo?.profile.permissions.apis
+
+    let apis = sessionState.userInfo?.profile?.permissions.apis
 
     // 为了方便,开发环境直接读取configs.ts中的配置.
     if (process.env.NODE_ENV === 'development') {
-        apis = Object.values(__configs.permissions);
+        apis = Object.values(Object.values(__configs.permissions));
     }
 
     if (apis && apis.includes(resourcePermission)) {

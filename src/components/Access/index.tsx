@@ -1,8 +1,9 @@
+import { UserSession } from '@/pages/login/DTO';
 import React from 'react';
 import { connect, SessionModelState } from 'umi';
 import __configs from "../../configs/configs";
 
-interface IProp {
+interface IProps {
     /**
      * 有权限时的显示。.
      */
@@ -16,7 +17,7 @@ interface IProp {
      */
     fallback?: React.ReactNode | string;
 
-    session: SessionModelState;
+    userSession?: UserSession;
 }
 
 /**
@@ -26,18 +27,18 @@ interface IProp {
  *  <button>delete</button>
  * </Access>
  */
-class Access extends React.Component<IProp, any> {
-    constructor(props: IProp) {
+class Access extends React.Component<IProps, any> {
+    constructor(props: IProps) {
         super(props)
     }
 
     render() {
-        let apis = this.props.session.userInfo?.profile.permissions.apis
+        let apis = this.props.userSession?.profile?.permissions.apis
 
         // 为了方便,开发环境直接读取configs.ts中的配置.
-        if (process.env.NODE_ENV === 'development') {
-            apis = Object.values(__configs.permissions);
-        }
+        // if (process.env.NODE_ENV === 'development') {
+        //     apis = Object.values(Object.values(__configs.permissions));
+        // }
 
         if (apis && apis.includes(this.props.permission)) {
             return (<>
@@ -54,7 +55,7 @@ class Access extends React.Component<IProp, any> {
 const mapStateToProps = (state: any, ownProps: any) => {
     const session: SessionModelState = state.session;
     return {
-        session,
+        userSession: session.userInfo,
         loading: state.loading.models.session, // dvaJs自带的loading(每个model共用一个)
     };
 };

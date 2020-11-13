@@ -44,11 +44,11 @@ class ListView extends React.Component<IProps, IState> {
     this.formRef = React.createRef();
 
     this.paging = {
-      defaultPageSize: 10,
+      defaultPageSize: 50,
     };
     this.pager = {
       showPageSizeSelector: true,
-      allowedPageSizes: [5, 10, 20],
+      allowedPageSizes: [50, 100],
       showInfo: true,
     };
   }

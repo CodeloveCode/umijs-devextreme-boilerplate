@@ -84,7 +84,7 @@ axiosInstance.interceptors.response.use(
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
 
-    // 后台接口做了处理,401时返回的也是200,需要在这里处理.
+    // tucci的后台接口做了处理,401未认证时返回的也是响应码200,但data.code是401
     if (response?.data?.code === 401) {
       toLogin();
       return Promise.reject(new Error(response.data.message));
