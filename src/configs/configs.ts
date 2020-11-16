@@ -4,12 +4,12 @@ const urls = {
   base_url_login: 'http://118.31.184.21:5035', // 葛志坚的QMS的对接Portal的后台登录接口.需要在header中带上token
   base_url_java_two_table: 'http://172.16.10.15:8080', // 海燕要的两张临时表.配置java后台使用.
 };
-const permissions = {
+const PERMISSIONS = {
   CAN_ADD: 'perm-add-res',
   CAN_DELETE: 'perm-del-res',
 
 };
-export default {
+export {
   urls,
-  permissions,
+  PERMISSIONS,
 };

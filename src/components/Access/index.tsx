@@ -1,7 +1,7 @@
 import { UserSession } from '@/pages/login/DTO';
 import React from 'react';
 import { connect, SessionModelState } from 'umi';
-import __configs from "../../configs/configs";
+import { PERMISSIONS } from "@/configs/configs";
 
 interface IProps {
     /**
@@ -20,14 +20,8 @@ interface IProps {
     userSession?: UserSession;
 }
 
-/**
- * 根据授权决定是否可以看到子组件.
- * @example 
- * <Access permission="canDelete" fallback={<div>没有删除权限</div>}>
- *  <button>delete</button>
- * </Access>
- */
-class Access extends React.Component<IProps, any> {
+
+class AccessControl extends React.Component<IProps, any> {
     constructor(props: IProps) {
         super(props)
     }
@@ -37,7 +31,7 @@ class Access extends React.Component<IProps, any> {
 
         // 为了方便,开发环境直接读取configs.ts中的配置.
         // if (process.env.NODE_ENV === 'development') {
-        //     apis = Object.values(Object.values(__configs.permissions));
+        //     apis = Object.values(Object.values(permissions));
         // }
 
         if (apis && apis.includes(this.props.permission)) {
@@ -60,4 +54,15 @@ const mapStateToProps = (state: any, ownProps: any) => {
     };
 };
 
-export default connect(mapStateToProps)(Access)
+/**
+ * 根据授权决定是否可以看到子组件.
+ * 也可以使用指定的内容进行替换.
+ * @example
+ * <Access permission="canAdd">
+ *  <button>add</button>
+ * </Access>
+ * <Access permission="canDelete" fallback={<button>没有权限</button>}>
+ *  <button>delete</button>
+ * </Access>
+ */
+export const Access = connect(mapStateToProps)(AccessControl)

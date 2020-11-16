@@ -1,5 +1,5 @@
 import Store from './store';
-import configs from '@/configs/configs';
+import * as configs from '@/configs/configs';
 
 /**
  * 从public/configs.js配置文件中读取所有urls
