@@ -5,7 +5,7 @@ const path = require('path');
 export default defineConfig({
   mock: false,
   request: {},
-  title: 'vskySoft',
+  title: 'vskySoft-frontEnd-DevEtreme-React-Scaffolding',
   favicon: '/assets/favicon.ico',
   // history: { type: 'hash' },
   nodeModulesTransform: {

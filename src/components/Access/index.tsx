@@ -30,9 +30,9 @@ class AccessControl extends React.Component<IProps, any> {
         let apis = this.props.userSession?.profile?.permissions.apis
 
         // 为了方便,开发环境直接读取configs.ts中的配置.
-        // if (process.env.NODE_ENV === 'development') {
-        //     apis = Object.values(Object.values(permissions));
-        // }
+        if (process.env.NODE_ENV === 'development') {
+            apis = Object.values(PERMISSIONS);
+        }
 
         if (apis && apis.includes(this.props.permission)) {
             return (<>
