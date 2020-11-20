@@ -34,7 +34,7 @@ class AccessControl extends React.Component<IProps, any> {
             apis = Object.values(PERMISSIONS);
         }
 
-        if (apis && apis.includes(this.props.permission)) {
+        if (apis && apis.length > 0 && apis.includes(this.props.permission)) {
             return (<>
                 {this.props.children}
             </>)

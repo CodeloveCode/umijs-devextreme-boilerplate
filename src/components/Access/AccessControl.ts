@@ -27,7 +27,7 @@ export function canAccess(resourcePermission: string) {
         apis = Object.values(PERMISSIONS);
     }
 
-    if (apis && apis.includes(resourcePermission)) {
+    if (apis && apis.length > 0 && apis.includes(resourcePermission)) {
         return true
     }
     return false
