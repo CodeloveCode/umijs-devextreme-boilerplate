@@ -10,7 +10,6 @@
     "baseUrl": "./",
     // "allowJs": true,
     "resolveJsonModule": true,
-    // "allowSyntheticDefaultImports": true,
     "strict": true,
     "paths": {
       "@/*": [

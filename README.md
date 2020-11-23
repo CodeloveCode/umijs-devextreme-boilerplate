@@ -1,6 +1,7 @@
 # vskysoft-QMS, 西宁质量管理.
 
 基于ReactJS, devExtreme组件库 开发.
+[https://gitee.com/mudking/react-umijs-devextreme](https://gitee.com/mudking/react-umijs-devextreme.git)
 
 ## Getting Started
 
@@ -18,6 +19,8 @@ PS:[cnpm的安装](https://developer.aliyun.com/mirror/NPM?from=tnpm)
 * 启动: npm start
 * 打包: npm run build
 
+## 测试
+
 ## 部署
 
 .umirc.ts中
@@ -27,10 +30,11 @@ mock: false,
 ```
 
 修改/src/configs/url.ts中的uri为正式环境的服务器接口.
+打包
 
+``` bash
 npm run build
-
-## 测试
+```
 
 ## 环境变量
 
