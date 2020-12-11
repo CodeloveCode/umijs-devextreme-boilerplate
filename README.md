@@ -5,36 +5,38 @@
 
 ## Getting Started
 
-* 使用前准备
+* 安装tyarn
 
-删除pages目录下除login, 404.tsx, document.ejs, index.tsx以外的所有目录
-/src/configs/menus.ts中配置需要的菜单
-/src/configs/url.ts中配置接口用到的url
+``` bash
+npm install -g tyarn
+```
 
-* 安装依赖 tyarn
+* 安装项目依赖.
 
-PS:[tyarn的安装](npm install yarn tyarn -g)
-PS:[cnpm的安装](https://developer.aliyun.com/mirror/NPM?from=tnpm)
+``` bash
+tyarn
+```
+
+[使用方法](https://yarn.bootcss.com/docs/usage/)
 
 * 启动: npm start
 * 打包: npm run build
 
-## 测试
+## 开发
+
+### 增加一个页面
+
+* src/pages下建立一个目录pageA, 放置index.jsx和index.less.
+* 去src/configs/menus.ts中添加对应的菜单.
+* 去pageA目录下开发UI
+* pageA目录下增加一个service.ts, 封装对后台API接口的请求. 用到的uri前缀, 建议放到src/configs/configs.ts目录下.
 
 ## 部署
 
-.umirc.ts中
-
-``` js
-mock: false,
-```
-
-修改/src/configs/url.ts中的uri为正式环境的服务器接口.
-打包
-
-``` bash
-npm run build
-```
+* 关闭mock(默认是关闭的)
+* 检查src/configs/configs.ts中的地址是否添加到/public/configs.js中.
+* npm run build 打包
+* 将dist目录下的文件部署到目标服务器.
 
 ## 环境变量
 
