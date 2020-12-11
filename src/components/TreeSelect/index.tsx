@@ -9,7 +9,7 @@ import TreeList, {
 } from 'devextreme-react/tree-list';
 import styles from './index.less';
 import dxTreeList from 'devextreme/ui/tree_list';
-// import { createStore } from 'devextreme-aspnet-data-nojquery';
+import { shallowEqual } from '@/utils/ImmutableUtils';
 
 interface IProps<T> {
   /**
@@ -23,7 +23,7 @@ interface IProps<T> {
   /**
    * 最顶层元素的父id
    */
-  rootValue?: any;
+  rootValue?: string;
   /**
    * dataSource中每个item用来显示的字段.
    */
@@ -36,31 +36,41 @@ interface IProps<T> {
   /**
    * 初始已选择项的id数组.
    */
-  value?: any[];
+  value?: string[];
   /**
    * 数据源目前只支持plain object array格式.
    */
   dataSource: any[];
-  // onValueChanged: (items: any[]) => void;
-  width?: number | string;
+  /**
+   * @deprecated 尽量使用target代替.
+   */
+  onValueChange?: (items: any[]) => void;
   /**
    * 把当前组件TreeSelect作为Form的Item或者DataGrid.Column的editCellComponent时,DevExtreme会传入data对象,可用于保存当前组件TreeSelect的值.
    * 当本组件作为DataGrid.Column的editCellRender时,从editCellRender可以得到入参target,其有setValue方法,可用于保存当前组件的值.
+   * 如果目标组件没有setValue,可以自行实现.只要将本组件的值保存到目标组件中即可.
+   * @example
+   * const target = {
+          setValue: (value: any) => {
+              this.form.option('formData', { task: value })
+          }
+      }
    */
-  target?: any;
+  target?: Setable;
+  width?: number | string;
+  disabled?: boolean;
 }
+
+type Setable = {
+  setValue(value: any): void;
+};
 
 interface IState<T> {
   /**
    * 已选择项的id数组.
    */
-  currentValue: any[];
+  currentValue: string[];
 }
-
-// const tasks = createStore({
-//   key: 'ID',
-// });
-
 
 /**
  * TreeSelect.
@@ -78,31 +88,28 @@ class TreeSelect<T> extends React.PureComponent<IProps<T>, IState<T>> {
       currentValue: props.value ?? [],
     };
   }
-  componentDidMount() {
-    // console.log('this.props.data', this.props.data)
-  }
 
-  onValueChanged = (e: any) => {
-    // this.props.data.setValue(e.value);
-    // console.log('props', this.props)
-    this.props.target.setValue(e.value)
-  }
+  // onValueChanged = (e: { value: any }) => {
+  //   const value: string[] = e.value;
+  //   this.props.target?.setValue(value);
+  // };
 
   render() {
     const { currentValue } = this.state;
-    const { keyExpr, displayExpr, dataSource, width } = this.props;
+    const { keyExpr, displayExpr, dataSource, width, disabled } = this.props;
     return (
       <DropDownBox
         ref={this.dropDownBoxRef}
-        width={width ?? 552}
+        // width={width ?? 552}
         // dropDownOptions={dropDownOptions}
         dataSource={dataSource}
         value={currentValue}
         valueExpr={keyExpr ?? 'id'}
         displayExpr={displayExpr ?? 'description'}
+        disabled={disabled ?? false}
         // placeholder="Select a value..."
         // showClearButton={true}
-        // onValueChanged={this.onValueChanged}
+        // onValueChanged={this.syncTreeViewSelection}
         contentRender={this.treeViewRender}
       />
     );
@@ -130,7 +137,7 @@ class TreeSelect<T> extends React.PureComponent<IProps<T>, IState<T>> {
         rootValue={rootValue ?? '0'} // 必填.根节点的父级id.要么删掉,要么在这里配置.
         showRowLines={false}
         showBorders={false}
-        columnAutoWidth={false}
+        columnAutoWidth={true}
         showColumnHeaders={false}
         selectedRowKeys={this.state.currentValue}
         onSelectionChanged={this.onItemSelectionChanged}
@@ -138,9 +145,10 @@ class TreeSelect<T> extends React.PureComponent<IProps<T>, IState<T>> {
         autoExpandAll={false}
         loadPanel={{ enabled: true }}
         onToolbarPreparing={this.onToolbarPreparing}
+        // onInitialized={this.initValueCanNotModify}
       >
         <Selection mode={selectionMode ?? 'multiple'} />
-        <Scrolling mode="infinite" />
+        {/* <Scrolling mode="infinite" /> */}
         <SearchPanel visible={true} />
         {/* <Paging enabled={true} pageSize={10} /> */}
         <Column
@@ -169,27 +177,97 @@ class TreeSelect<T> extends React.PureComponent<IProps<T>, IState<T>> {
     this.dropDownBoxRef.current?.instance!.close();
   };
 
+  // itemRender = (e: any) => {
+  //   return (<>
+
+  //   </>)
+  // }
+  // { component ?: dxTreeView, element ?: dxElement, model ?: any, itemData ?: any, itemElement ?: dxElement, itemIndex ?: number, node ?: dxTreeViewNode }
+  /**
+   * 初始已选择的项不允许修改.
+   */
+  // initValueCanNotModify = (e: { component?: dxTreeView, element?: dxElement, model?: any, itemData?: any, itemElement?: dxElement, itemIndex?: number, node?: dxTreeViewNode }) => {
+
+  //   const initValues = this.props.value
+  //   if (initValues && initValues.length > 0) {
+  //     // const items = e.component?.option('items')
+  //     const itemElem = e.itemElement! as HTMLElement
+
+  //     if (initValues.includes(e.itemData.id)) {
+  //       e.component?.option(`items[${e.itemIndex}].disable`, true);
+  //       // itemElem.setAttribute('')
+  //     }
+  //     if (e.node) {
+  //       e.node.disabled = true
+  //       e.node.selected = true
+  //     }
+  //     // if (itemElem.parentElement) {
+  //     //   const checkBox = itemElem.parentElement.querySelector('.dx-show-invalid-badge.dx-checkbox.dx-widget') as any
+  //     //   if (checkBox) {
+  //     //     // checkBox.setAttribute('readonly', 'readonly');
+  //     //     // checkBox.setAttribute('disabled', 'disabled');
+  //     //     // checkBox.setAttribute('checked', 'checked');
+  //     //   }
+  //     // }
+  //   }
+  // }
+  // initValueCanNotModify = (e: { component?: dxTreeList, element?: dxElement }) => {
+  //   const initValues = this.props.value;
+
+  //   if (initValues && initValues.length > 0) {
+  //     const ds: any[] = [...this.props.dataSource];
+
+  // 过滤是不行的,父节点过滤了,子节点就显示不出来了.
+  //     const newDs = ds.filter(item => {
+  //       return !initValues.includes(item.id)
+  //     })
+  //     // const newDs = ds.map(item => {
+  //     //   if (initValues.includes(item.id)) {
+  //     //     item.selected = true;
+  //     //     item.disabled = true;
+  //     //     item.readOnly = true
+  //     //   }
+  //     //   return item;
+  //     // });
+  //     e.component?.option('dataSource', newDs);
+  //   }
+  // };
+  // ((e: { currentSelectedRowKeys?: Array<any>, currentDeselectedRowKeys?: Array<any>, selectedRowKeys?: Array<any>, selectedRowsData?: Array<any> }) => any);
   onItemSelectionChanged = (e: {
     component?: dxTreeList;
-    currentDeselectedRowKeys?: any[];
+    currentDeselectedRowKeys?: Array<string>;
   }) => {
-    // 多选时, 如果选择的是已分配的组,则不允许取消选择.
+    // 处理多选时的反选: 如果被取消选择的是初始值,则不允许取消选择.
     if (
       this.props.selectionMode !== 'single' &&
       e.currentDeselectedRowKeys &&
       e.currentDeselectedRowKeys.length > 0
     ) {
-      const currDeselectedKey = e.currentDeselectedRowKeys[0];
       const initValues = this.props.value;
+
+      const currDeselectedKey = e.currentDeselectedRowKeys[0];
 
       if (initValues?.includes(currDeselectedKey)) {
         e.component?.selectRows([currDeselectedKey], true);
         return;
       }
     }
-    // this.props.onValueChanged(e.component?.getSelectedRowsData()!);  
-    this.onValueChanged({ value: this.treeList.getSelectedRowKeys() })
-    this.setState({ currentValue: this.treeList.getSelectedRowKeys() });
+
+    // 使用props提供的方法把最新的SelectedRowKeys进行保存.
+    const selectedRowKeys = this.treeList.getSelectedRowKeys();
+    // 这里不能用浅比较,第一次选择时,DropDownBox默认会将其作为自己的value.因此浅比较结果会是true,就不会setValue.造成结果无法保存到target.
+    // if (!shallowEqual(selectedRowKeys, this.state.currentValue)) {
+    if (this.props.onValueChange) {
+      this.props.onValueChange(this.treeList.getSelectedRowsData());
+    }
+    if (this.props.target) {
+      this.props.target.setValue(selectedRowKeys);
+      // this.onValueChanged({ value: this.treeList.getSelectedRowKeys() });
+    }
+
+    // 更新自身维护的数据.
+    this.setState({ currentValue: selectedRowKeys });
+    // }
   };
 
   get treeList(): dxTreeList {
