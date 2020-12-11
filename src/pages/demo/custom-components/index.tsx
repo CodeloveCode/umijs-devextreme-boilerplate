@@ -36,12 +36,7 @@ export default class App extends React.Component {
                         // console.log('form-task-params: ', e.editorOptions)
                         const target = {
                             setValue: (value: any) => {
-                                // console.log('treeselect value:', value)
                                 this.formRef.current?.instance!.option('formData', { task: value.join(',') })
-                                // this.formRef.current?.instance!.getEditor('task')?.option('value', value.join(','))
-                                // const taskItem = param.component.getEditor('task')
-                                // e.editorOptions.value = value.join(',')
-                                // taskItem.option('value', value.join(','))
                             }
                         }
 

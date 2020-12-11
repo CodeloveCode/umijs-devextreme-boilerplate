@@ -10,6 +10,7 @@ import HeaderRightContent from '@/components/HeaderRightContent';
 import { LOGINED_USER_SESSION } from '@/configs/constants';
 import Store from '@/utils/store';
 import { UserProfile, UserSession } from '@/pages/login/DTO';
+import { TabPanel, Sortable } from 'devextreme-react';
 
 /**
  * 菜单数据预处理.
@@ -19,10 +20,9 @@ import { UserProfile, UserSession } from '@/pages/login/DTO';
  */
 const loopMenuItem = (menus: MenuDataItem[], userProfile?: UserProfile): MenuDataItem[] => {
     const remoteMenuPaths = userProfile?.permissions.menus
-    // const remoteMenuPaths = ['/basic-config', '/basic-config/service-config']
 
     return menus.map(({ icon, children, ...item }) => {
-        if (remoteMenuPaths && item.path && !remoteMenuPaths.includes(item.path)) {
+        if (remoteMenuPaths && remoteMenuPaths.length > 0 && item.path && !remoteMenuPaths.includes(item.path)) {
             item.hideInMenu = true
         } else {
             item.hideInMenu = false
@@ -49,48 +49,167 @@ const generateRoute = (menus: MenuDataItem[]): Route => {
     }));
 };
 
-class DefaultLayout extends React.Component<any, any> {
+interface IState {
+    logoComponent: () => JSX.Element;
+    tabList: any[];
+    tabSelected: any;
+    tabVisible: boolean;
+}
+
+class DefaultLayout extends React.Component<any, IState> {
+    private allMenus: any;
     constructor(props: any) {
         super(props)
         this.state = {
             logoComponent: bigLogo,
+            tabList: [],
+            tabSelected: {},
+            tabVisible: false,
+        }
+        this.allMenus = [];
+    }
+
+    componentDidMount() {
+        if (this.props.location.pathname != '/') {
+            this.mapMenus(menus);
+            let cMenu = this.allMenus.find((item: any) => {
+                return item.path === this.props.location.pathname;
+            });
+            if (!cMenu) {
+                let splits = this.props.location.pathname.split('/');
+                splits.pop();
+                let path = splits.join('/');
+                cMenu = this.allMenus.find((item: any) => {
+                    return item.path === path;
+                });
+            }
+            if (cMenu) {
+                this.setState({ tabVisible: true });
+                let tab = { tab: cMenu.name, path: cMenu.path };
+                const tabs = [...this.state.tabList];
+                tabs.push(tab);
+                this.setState({ tabList: tabs, tabSelected: tab });
+            }
         }
     }
+
+    mapMenus = (menus: any) => {
+        for (let i in menus) {
+            this.allMenus.push(menus[i]);
+            if (menus[i].children) {
+                this.mapMenus(menus[i].children);
+            }
+        }
+    };
+
+    addButtonHandler = (item: any) => {
+        const tabs = [...this.state.tabList];
+        let newItem = tabs.find((e: any) => {
+            return e.tab == item.name;
+        });
+        if (!newItem) {
+            if (tabs.length === 0) {
+                this.setState({ tabVisible: true });
+            }
+            newItem = { tab: item.name, path: item.path };
+            tabs.push(newItem);
+            this.setState({ tabList: tabs });
+        }
+        this.setState({ tabSelected: newItem });
+    };
+
+    closeButtonHandler = (item: any) => {
+        const newTabs = [...this.state.tabList];
+        const index = newTabs.indexOf(item);
+
+        newTabs.splice(index, 1);
+        this.setState({ tabList: newTabs });
+        if (index >= newTabs.length && index > 0) {
+            this.setState({ tabSelected: newTabs[index - 1] });
+            this.props.history.push(newTabs[index - 1].path);
+        } else {
+            this.setState({ tabSelected: newTabs[0] });
+            this.props.history.push(newTabs[0].path);
+        }
+    };
+
+    renderTitle = (data: any) => {
+        return (
+            <React.Fragment>
+                <div>
+                    <span>{data.tab}</span>
+                    {this.state.tabList.length >= 2 && (
+                        <i
+                            className="dx-icon dx-icon-close"
+                            onClick={() => {
+                                this.closeButtonHandler(data);
+                            }}
+                        />
+                    )}
+                </div>
+            </React.Fragment>
+        );
+    };
+
+    onTabDragStart = (e: any) => {
+        e.itemData = e.fromData[e.fromIndex];
+    };
+
+    onTabDrop = (e: any) => {
+        const newTabs = [...this.state.tabList];
+        newTabs.splice(e.fromIndex, 1);
+        newTabs.splice(e.toIndex, 0, e.itemData);
+        this.setState({ tabList: newTabs });
+    };
+
+    onSelectionChanged = (args: any) => {
+        if (
+            this.state.tabSelected &&
+            this.state.tabSelected.path === args.addedItems[0].path
+        ) {
+            return;
+        }
+        this.setState({ tabSelected: args.addedItems[0] });
+        this.props.history.push(args.addedItems[0].path);
+    };
 
     render() {
         const { location, sessionState, children, dispatch } = this.props;
         const pathname: string = location.pathname;
 
-        // if ('production' === process.env.NODE_ENV) {
-        // 登陆页不使用此布局,而是返回登陆页本身组件.
-        if (pathname === '/login') {
-            return children;
-        } else {
-            // 非登陆的路由需要鉴权.
-            // 从store中取数据
-            // 取不到,从sessionStorage取,并存入store.session.state
-            // 取不到,跳转登陆页.
-            // const sessionState = useSelector((state: any) => state.session)
-            let isLogined = sessionState.userInfo?.token ?? false;
-            if (!isLogined) {
-                const userInfo: UserSession = Store.get(LOGINED_USER_SESSION);
+        if ('production' === process.env.NODE_ENV) {
+            // 登陆页不使用此布局,而是返回登陆页本身组件.
+            if (pathname === '/login') {
+                return children;
+            } else {
+                // 非登陆的路由需要鉴权.
+                // 从store中取数据
+                // 取不到,从sessionStorage取,并存入store.session.state
+                // 取不到,跳转登陆页.
+                // const sessionState = useSelector((state: any) => state.session)
+                let isLogined = sessionState.userInfo?.token ?? false;
+                if (!isLogined) {
+                    const userInfo: UserSession = Store.get(LOGINED_USER_SESSION);
 
-                isLogined = userInfo?.profile ?? false;
-                if (isLogined) {
-                    dispatch({
-                        type: 'session/saveUserInfo',
-                        payload: { userInfo },
-                    });
-                } else {
-                    return <Redirect to="/login" />;
+                    isLogined = userInfo?.profile ?? false;
+                    if (isLogined) {
+                        dispatch({
+                            type: 'session/saveUserInfo',
+                            payload: { userInfo },
+                        });
+                    } else {
+                        return <Redirect to="/login" />;
+                    }
                 }
+                // TODO:把用户的api权限,菜单权限等存入Context,传给子组件.方便Authorization子组件调用进行鉴权.
             }
-            // TODO:把用户的api权限,菜单权限等存入Context,传给子组件.方便Authorization子组件调用进行鉴权.
         }
-        // }
 
         const userProfile = Store.get(LOGINED_USER_SESSION)?.profile;
-        const { logoComponent } = this.state
+
+        const { logoComponent,
+            tabList, tabSelected, tabVisible,
+        } = this.state;
 
         return (<>
             <ProLayout
@@ -115,6 +234,26 @@ class DefaultLayout extends React.Component<any, any> {
                     <HeaderRightContent userProfile={userProfile} />
                 )}
             >
+                <Sortable
+                    filter=".dx-tab"
+                    data={tabList}
+                    itemOrientation="horizontal"
+                    dragDirection="horizontal"
+                    onDragStart={this.onTabDragStart}
+                    onReorder={this.onTabDrop}
+                >
+                    <TabPanel
+                        dataSource={tabList}
+                        itemTitleRender={this.renderTitle}
+                        deferRendering={false}
+                        showNavButtons={true}
+                        selectedItem={tabSelected}
+                        repaintChangesOnly={true}
+                        onSelectionChanged={this.onSelectionChanged}
+                        itemComponent={() => <></>}
+                        visible={tabVisible}
+                    />
+                </Sortable>
                 {this.props.children}
             </ProLayout>
         </>)
@@ -135,7 +274,13 @@ class DefaultLayout extends React.Component<any, any> {
         if (menuItemProps.path) {
             // 顶层非目录菜单.不需要icon.
             const iconComponent = menuItemProps.pro_layout_parentKeys.length > 0 ? menuItemProps.icon : null
-            return <Link to={menuItemProps.path}>{iconComponent}{defaultDom}</Link>;
+            return (
+                <Link to={menuItemProps.path} onClick={() => this.addButtonHandler(menuItemProps)}
+                >
+                    {iconComponent}
+                    {defaultDom}
+                </Link>
+            );
         }
         return defaultDom;
     }
@@ -145,15 +290,13 @@ class DefaultLayout extends React.Component<any, any> {
      * @param routes
      */
     breadcrumbRender = (routes: any) => {
-        // 许海燕:让面包屑不可点击.
-        // 去掉path,这样点不了了.
         const newRoutes = routes.map((route: any) => {
             delete route.path
             return route
         })
         return [
             {
-                // path: '/',
+                // path: '/', // 让面包屑不可点击.
                 breadcrumbName: '主页',
             },
             ...(newRoutes || []),
