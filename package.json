@@ -31,6 +31,8 @@
     "axios": "^0.20.0",
     "devextreme": "20.1.7",
     "devextreme-react": "20.1.7",
+    "exceljs": "^4.2.0",
+    "file-saver": "^2.0.5",
     "lint-staged": "^10.0.7",
     "lodash": "^4.17.20",
     "prettier": "^1.19.1",
@@ -41,6 +43,7 @@
     "yorkie": "^2.0.0"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.1",
     "@types/mockjs": "^1.0.3",
     "@types/redux-logger": "^3.0.8",
     "@types/uuid": "^8.3.0",
