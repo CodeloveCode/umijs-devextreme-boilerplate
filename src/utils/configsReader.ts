@@ -1,4 +1,3 @@
-import Store from './store';
 import * as configs from '@/configs/configs';
 
 /**

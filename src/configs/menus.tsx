@@ -23,7 +23,7 @@ export const menus: MenuDataItem[] = [
     icon: "pieChart",
     children: [
       {
-        path: '/devextreme-demo/datagrid',
+        path: '/devextreme-demo/DataGrid-CRUD',
         name: 'DataGrid',
       },
       // {

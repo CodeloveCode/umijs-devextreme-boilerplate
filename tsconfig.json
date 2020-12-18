@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "baseUrl": "./",
-    // "allowJs": true,
+    "allowJs": true,
     "resolveJsonModule": true,
     "strict": true,
     "paths": {

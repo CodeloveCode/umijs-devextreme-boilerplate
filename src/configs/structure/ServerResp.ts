@@ -6,3 +6,13 @@ export default interface ServerResp {
   message: string;
   data: [] | boolean | any;
 }
+
+/**
+ * 另一种 后台响应数据结构.
+ */
+export interface DTOResponse {
+  success: boolean;
+  code: number;
+  message: string;
+  data: any;
+}

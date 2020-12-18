@@ -26,7 +26,6 @@ function getDateTimeStr(datetime: Date | string): string {
     return moment(datetime).format('YYYY-MM-DD HH:mm:ss')
 }
 
-
 /**
  * 将Date格式化成带T和Z关键字的UTC日期字符串,如:
  * "2020-08-24T14:05:00+08:00" 北京时间
