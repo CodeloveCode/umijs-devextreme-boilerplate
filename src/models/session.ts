@@ -4,8 +4,7 @@ import { Effect, Reducer } from 'umi';
 import { deleteSession, fetchUserInfo } from '../pages/login/service';
 
 export interface SessionModelState {
-  // loading: false, dvajs可以提供自动loading,不需要这个了.
-  userInfo?: UserSession;
+  userSession?: UserSession;
   error: null;
 }
 
@@ -26,22 +25,22 @@ const SessionModel: SessionModelType = {
   namespace: 'session',
 
   state: {
-    userInfo: undefined,
+    userSession: undefined,
     error: null,
   },
 
   effects: {
     *getUserProfile({ payload: { token } }, { call, put }) {
       try {
-        const userInfo = yield call(fetchUserInfo, token);
-        yield put({ type: 'saveUserInfo', payload: { userInfo } });
+        const userSession = yield call(fetchUserInfo, token);
+        yield put({ type: 'saveUserInfo', payload: { userSession } });
       } catch (error) {
         console.log(error.message);
         notifyError(error.message);
       }
     },
 
-    *logout({ payload }, { call, put }) {
+    *logout(_, { call, put }) {
       try {
         yield call(deleteSession);
         yield put({ type: 'removeSession' });
@@ -62,7 +61,7 @@ const SessionModel: SessionModelType = {
     removeSession(state, action) {
       return {
         loading: false,
-        userInfo: undefined,
+        userSession: undefined,
         error: null,
       };
     },

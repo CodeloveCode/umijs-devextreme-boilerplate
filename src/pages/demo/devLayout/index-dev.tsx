@@ -35,13 +35,13 @@ function BasicLayout(props: any) {
     // const sessionState = props.sessionState;
     // let isLogined = sessionState.user?.token ?? false;
     // if (!isLogined) {
-    //   const userInfo = Store.get(LOGINED_USER_SESSION);
+    //   const userSession = Store.get(LOGINED_USER_SESSION);
 
-    //   isLogined = userInfo?.token ?? false;
+    //   isLogined = userSession?.token ?? false;
     //   if (isLogined) {
     //     props.dispatch({
     //       type: 'session/saveUserInfo',
-    //       payload: { user: userInfo },
+    //       payload: { user: userSession },
     //     });
     //   } else {
     //     return <Redirect to="/login" />;

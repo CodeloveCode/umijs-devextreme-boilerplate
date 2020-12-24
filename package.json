@@ -30,6 +30,7 @@
     "devextreme-react": "20.1.7",
     "exceljs": "^4.2.0",
     "file-saver": "^2.0.5",
+    "jquery": "3.5.1",
     "lint-staged": "^10.0.7",
     "lodash": "^4.17.20",
     "prettier": "^1.19.1",

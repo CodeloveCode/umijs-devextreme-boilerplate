@@ -49,7 +49,7 @@ class AccessControl extends React.Component<IProps, any> {
 const mapStateToProps = (state: any, ownProps: any) => {
     const session: SessionModelState = state.session;
     return {
-        userSession: session.userInfo,
+        userSession: session.userSession,
         loading: state.loading.models.session, // dvaJs自带的loading(每个model共用一个)
     };
 };

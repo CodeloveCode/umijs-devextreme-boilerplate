@@ -20,7 +20,7 @@ export function canAccess(resourcePermission: string) {
     // 从Redux中取出SessionReducer的state.
     const sessionState = getDvaApp()._store.getState().session as SessionModelState;
 
-    let apis = sessionState.userInfo?.profile?.permissions.apis
+    let apis = sessionState.userSession?.profile?.permissions.apis
 
     // 为了方便,开发环境直接读取configs.ts中的配置.
     if (process.env.NODE_ENV === 'development') {

@@ -187,15 +187,15 @@ class DefaultLayout extends React.Component<any, IState> {
                 // 取不到,从sessionStorage取,并存入store.session.state
                 // 取不到,跳转登陆页.
                 // const sessionState = useSelector((state: any) => state.session)
-                let isLogined = sessionState.userInfo?.token ?? false;
+                let isLogined = sessionState.userSession?.token ?? false;
                 if (!isLogined) {
-                    const userInfo: UserSession = Store.get(LOGINED_USER_SESSION);
+                    const userSession: UserSession = Store.get(LOGINED_USER_SESSION);
 
-                    isLogined = userInfo?.profile ?? false;
+                    isLogined = userSession?.profile ?? false;
                     if (isLogined) {
                         dispatch({
                             type: 'session/saveUserInfo',
-                            payload: { userInfo },
+                            payload: { userSession },
                         });
                     } else {
                         return <Redirect to="/login" />;

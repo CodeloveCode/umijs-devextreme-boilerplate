@@ -2,8 +2,7 @@ import React from 'react';
 import { Redirect, Link, withRouter, SessionModelState } from 'umi';
 import { connect } from 'react-redux';
 
-import LoadIndicator from 'devextreme-react/load-indicator';
-import './index.less';
+import styles from './index.less';
 import { LOGINED_USER_SESSION } from '@/configs/constants';
 import Store from '@/utils/store';
 import { LoadPanel } from 'devextreme-react';
@@ -28,23 +27,22 @@ class LoginView extends React.Component<any, any> {
   render() {
     const {
       loading,
-      session: { userInfo },
+      session: { userSession },
     } = this.props;
 
-
-    console.log('userInfo?.profile', userInfo?.profile);
-
-    if (userInfo?.profile) {
+    // console.log('userSession?.profile', userSession?.profile);
+    if (userSession?.profile) {
       // 进入首页
       return <Redirect to="/" />;
     }
 
-    // TODO:三秒后,重定向到Portal
     return (
       <>
-        <LoadIndicator visible={this.props.loading} />
-        <h1>尚未登录,5秒后即将转到Portal登录...</h1>
-        <a href={portal_system_url}>http://118.31.184.21:6543/portal</a>
+        <LoadPanel visible={this.props.loading} position={{ of: '#tips' }} />
+        <div id="tips">
+          <h1>会话过期或尚未登录,请先去Portal登录...</h1>
+          <a href={portal_system_url}>统一登录系统Portal</a>
+        </div>
       </>
     );
   }
