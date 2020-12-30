@@ -9,7 +9,7 @@
   //   }
 }
 
-// tab页样式
+// 可拖拽 tab页样式
 .dx-tab-content .dx-icon.dx-icon-close {
   display: inline-block;
   opacity: 0.6;
@@ -27,5 +27,22 @@
 .dx-sortable-dragging .dx-tab {
   box-sizing: border-box;
   text-align: center;
+}
+
+.tab_title {
+  display: flex;
+  justify-content: flex-start;
+}
+
+// CSS Modules 允许使用:global(.className)的语法，声明一个全局规则。凡是这样声明的class，都不会被编译成哈希字符串。
+// less中如果希望样式不被编译成hash字符串,则需要用:global包裹,此时里面的代码就是原始的css.
+:global {
+  #tabpanel-menu.dx-tabpanel .dx-tabpanel-tabs .dx-tabs {
+    background-color: #ffffff !important;
+  }
+  #layout-sortable-panel {
+    border-bottom: 1px solid #d9d9d9;
+    // box-shadow: 0 10px 5px #888888 !important;
+  }
 }
 // tab页样式 end

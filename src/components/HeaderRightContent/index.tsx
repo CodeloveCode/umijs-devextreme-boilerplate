@@ -1,35 +1,33 @@
-import { LOGINED_USER_SESSION } from '@/configs/constants';
-import Store from '@/utils/store';
-import { Button, ContextMenu, List, Toolbar } from 'devextreme-react';
+
+import { Button, ContextMenu } from 'devextreme-react';
 import { Position } from 'devextreme-react/context-menu';
-import { Item } from 'devextreme-react/toolbar';
 import React from 'react';
 import './index.less';
 import defaultImg from '@/assets/logo.png';
-
-const signOut = () => { };
-
-const menuItems = [
-  {
-    text: 'Profile',
-    icon: 'user',
-  },
-  {
-    text: 'Logout',
-    icon: 'runner',
-    onClick: signOut,
-  },
-];
+import { UserProfile } from '@/pages/login/DTO';
+import { connect } from 'umi';
 
 interface IProps {
-  userProfile: any; // TODO:跟tucci要数据结构.
+  userProfile: UserProfile;
+  logout: () => void;
 }
-export default (props: IProps) => {
+function AppComponent(props: IProps) {
+  const menuItems = [
+    {
+      text: 'Profile',
+      icon: 'user',
+    },
+    {
+      text: 'Logout',
+      icon: 'runner',
+      onClick: props.logout,
+    },
+  ];
+
   const userProfile = props.userProfile ?? {
     userName: 'admin',
     staffPhoto: defaultImg,
   };
-
 
   return (
     <header>
@@ -69,3 +67,15 @@ export default (props: IProps) => {
     </header>
   );
 };
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    dispatch,
+    logout: () => {
+      dispatch({ type: 'session/logout' })
+    }
+  };
+};
+
+export const HeaderRightContent = connect(null, mapDispatchToProps)(AppComponent)
+export default HeaderRightContent 

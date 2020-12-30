@@ -5,6 +5,8 @@
     "msjsdiag.debugger-for-chrome",
     "gruntfuggly.todo-tree",
     "visualstudioexptteam.vscodeintellicode",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "mervin.markdown-formatter"
   ]
 }
