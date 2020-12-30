@@ -1,4 +1,4 @@
-# vskysoft-QMS, 西宁质量管理.
+# vskysoft-boilerplate.
 
 基于ReactJS, devExtreme组件库 开发.
 [https://gitee.com/mudking/react-umijs-devextreme](https://gitee.com/mudking/react-umijs-devextreme.git)
